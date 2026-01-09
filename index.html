@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Spinner | Musicians' Den</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Floating music notes background */
+        .music-notes-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-note {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.15;
+            animation: floatUp 15s linear infinite;
+            color: #d4af37;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.15;
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            margin-bottom: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #d4af37 0%, #f5d67b 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-shadow: none;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
+        }
+
+        .tagline {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            margin: 0 auto 30px;
+        }
+
+        /* Outer glow ring */
+        .wheel-glow {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 60%, rgba(212, 175, 55, 0.3) 100%);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            box-shadow: 
+                0 0 60px rgba(212, 175, 55, 0.4),
+                0 0 100px rgba(212, 175, 55, 0.2),
+                inset 0 0 60px rgba(0, 0, 0, 0.6);
+            border: 5px solid;
+            border-color: #d4af37;
+            background: #1a1a3a;
+            overflow: hidden;
+        }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            background: linear-gradient(135deg, #d4af37, #f5d67b, #d4af37) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .wheel.spinning {
+            box-shadow: 
+                0 0 80px rgba(212, 175, 55, 0.6),
+                0 0 120px rgba(212, 175, 55, 0.3),
+                inset 0 0 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .note-label {
+            position: absolute;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                2px 2px 4px rgba(0, 0, 0, 0.9);
+            pointer-events: none;
+            white-space: nowrap;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .note-label.highlight {
+            font-size: 1.3rem;
+            text-shadow: 
+                0 0 20px rgba(255, 255, 255, 1),
+                0 0 40px rgba(212, 175, 55, 0.8);
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #f5d67b, #d4af37, #b8962e);
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 
+                0 0 30px rgba(212, 175, 55, 0.8),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.3),
+                inset 0 5px 15px rgba(255, 255, 255, 0.3);
+            animation: centerPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes centerPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 0 30px rgba(212, 175, 55, 0.8),
+                    inset 0 -5px 15px rgba(0, 0, 0, 0.3),
+                    inset 0 5px 15px rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                box-shadow: 
+                    0 0 50px rgba(212, 175, 55, 1),
+                    0 0 80px rgba(212, 175, 55, 0.5),
+                    inset 0 -5px 15px rgba(0, 0, 0, 0.3),
+                    inset 0 5px 15px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        .center-circle::after {
+            content: '♪';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            color: #1a1a3a;
+            text-shadow: none;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+        }
+
+        .pointer::before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 22px solid transparent;
+            border-right: 22px solid transparent;
+            border-top: 45px solid #d4af37;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
+        }
+
+        .pointer::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 25px solid #f5d67b;
+        }
+
+        .result-display {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .result-note {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #d4af37 0%, #f5d67b 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6));
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .result-note.pop {
+            animation: popIn 0.6s ease forwards;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.3) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            70% {
+                transform: scale(0.9) rotate(-2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .countdown {
+            font-size: 1rem;
+            color: #a0a0c0;
+            height: 24px;
+            margin-top: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .countdown.pulse {
+            animation: countdownPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes countdownPulse {
+            0%, 100% {
+                color: #a0a0c0;
+            }
+            50% {
+                color: #d4af37;
+                text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-play {
+            background: linear-gradient(145deg, #34ce57, #28a745, #1e7e34);
+            color: #fff;
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-play:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(40, 167, 69, 0.6);
+        }
+
+        .btn-pause {
+            background: linear-gradient(145deg, #f5d67b, #d4af37, #b8962e);
+            color: #1a1a2e;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-pause:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
+        }
+
+        .btn-stop {
+            background: linear-gradient(145deg, #e4606d, #dc3545, #bd2130);
+            color: #fff;
+            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-stop:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(220, 53, 69, 0.6);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .settings-row {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .auto-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .auto-toggle > label {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+            transition: 0.4s;
+            border-radius: 30px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background: linear-gradient(145deg, #fff, #e0e0e0);
+            transition: 0.4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(145deg, #d4af37, #b8962e);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .delay-setting {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            transform: translateY(-10px);
+        }
+
+        .delay-setting.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .delay-setting label {
+            color: #a0a0c0;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .delay-input {
+            width: 70px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            text-align: center;
+            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+            border: 2px solid #3a3a5a;
+            border-radius: 10px;
+            color: #d4af37;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .delay-input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .delay-input::-webkit-inner-spin-button,
+        .delay-input::-webkit-outer-spin-button {
+            opacity: 1;
+            background: #2a2a4a;
+        }
+
+        .delay-unit {
+            color: #a0a0c0;
+            font-size: 0.85rem;
+        }
+
+        .status {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .status.spinning {
+            color: #d4af37;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            animation: statusPulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .status.stopped {
+            color: #dc3545;
+        }
+
+        footer {
+            margin-top: 35px;
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        footer a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+        }
+
+        .confetti.active {
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg) scale(0.5);
+            }
+        }
+
+        /* Sparkles around result */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .sparkle.active {
+            animation: sparkle 0.8s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 420px) {
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .result-note {
+                font-size: 4rem;
+            }
+
+            .btn {
+                padding: 12px 22px;
+                font-size: 0.85rem;
+            }
+
+            .note-label {
+                font-size: 0.85rem;
+            }
+
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+
+            .settings-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating music notes background -->
+    <div class="music-notes-bg" id="musicNotesBg"></div>
+
+    <!-- Confetti container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <div class="container">
+        <div class="logo">
+            <h1>♪ Musicians' Den</h1>
+        </div>
+        <p class="tagline">Your Dream Our Passion</p>
+
+        <div class="wheel-container">
+            <div class="wheel-glow"></div>
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel"></div>
+            <div class="center-circle"></div>
+        </div>
+
+        <div class="result-display" id="resultDisplay">
+            <div class="result-note" id="resultNote">?</div>
+            <div class="countdown" id="countdown"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-play" id="playBtn">▶ Play</button>
+            <button class="btn btn-pause" id="pauseBtn" disabled>‖ Pause</button>
+            <button class="btn btn-stop" id="stopBtn" disabled>■ Stop</button>
+        </div>
+
+        <div class="settings-row">
+            <div class="auto-toggle">
+                <label for="autoMode">Auto Roll</label>
+                <label class="switch">
+                    <input type="checkbox" id="autoMode" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="delay-setting visible" id="delaySetting">
+                <label for="delayInput">Delay:</label>
+                <input type="number" id="delayInput" class="delay-input" value="5" min="1" max="60">
+                <span class="delay-unit">sec</span>
+            </div>
+        </div>
+
+        <div class="status" id="status">Ready</div>
+
+        <footer>
+            <p>© 2026 <a href="https://musiciansdenindia.com" target="_blank">Musicians' Den</a> | Note Practice Tool</p>
+        </footer>
+    </div>
+
+    <script>
+        const notes = [
+            'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'
+        ];
+
+        // Rainbow gradient colors for each note
+        const noteColors = [
+            ['#ff6b6b', '#ee5a5a'], // C - Red
+            ['#ff8e72', '#e67a5c'], // C# - Red-Orange
+            ['#ffa94d', '#e6943a'], // Db - Orange
+            ['#ffd43b', '#e6be2a'], // D - Yellow-Orange
+            ['#ffe066', '#e6ca52'], // D# - Yellow
+            ['#c0eb75', '#a8d45e'], // Eb - Yellow-Green
+            ['#69db7c', '#52c465'], // E - Green
+            ['#38d9a9', '#28c496'], // F - Teal
+            ['#3bc9db', '#2ab4c6'], // F# - Cyan
+            ['#4dabf7', '#3a96e2'], // Gb - Light Blue
+            ['#748ffc', '#5f7ae7'], // G - Blue
+            ['#9775fa', '#8260e5'], // G# - Blue-Purple
+            ['#b197fc', '#9c82e7'], // Ab - Purple
+            ['#da77f2', '#c562dd'], // A - Magenta
+            ['#f783ac', '#e26e97'], // A# - Pink
+            ['#ffa8a8', '#e69393'], // Bb - Light Pink
+            ['#ff6b6b', '#ee5a5a'], // B - Red (cycle)
+        ];
+
+        const wheel = document.getElementById('wheel');
+        const resultNote = document.getElementById('resultNote');
+        const resultDisplay = document.getElementById('resultDisplay');
+        const countdown = document.getElementById('countdown');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const autoMode = document.getElementById('autoMode');
+        const delaySetting = document.getElementById('delaySetting');
+        const delayInput = document.getElementById('delayInput');
+        const status = document.getElementById('status');
+        const confettiContainer = document.getElementById('confettiContainer');
+        const musicNotesBg = document.getElementById('musicNotesBg');
+
+        let currentRotation = 0;
+        let isSpinning = false;
+        let isPaused = false;
+        let countdownTimer = null;
+        let countdownValue = 0;
+        let labelElements = [];
+
+        const totalNotes = notes.length;
+        const segmentAngle = 360 / totalNotes;
+
+        // Create floating music notes
+        function createFloatingNotes() {
+            const musicSymbols = ['♪', '♫', '♬', '♩', '𝄞'];
+            
+            for (let i = 0; i < 15; i++) {
+                const note = document.createElement('div');
+                note.className = 'floating-note';
+                note.textContent = musicSymbols[Math.floor(Math.random() * musicSymbols.length)];
+                note.style.left = Math.random() * 100 + '%';
+                note.style.animationDelay = Math.random() * 15 + 's';
+                note.style.animationDuration = (15 + Math.random() * 10) + 's';
+                note.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
+                musicNotesBg.appendChild(note);
+            }
+        }
+
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#d4af37', '#f5d67b', '#ff6b6b', '#4dabf7', '#69db7c', '#da77f2', '#ffd43b'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                confetti.style.width = (5 + Math.random() * 10) + 'px';
+                confetti.style.height = (5 + Math.random() * 10) + 'px';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+                
+                confettiContainer.appendChild(confetti);
+                
+                setTimeout(() => confetti.classList.add('active'), 10);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        // Create sparkles
+        function createSparkles() {
+            const rect = resultDisplay.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.innerHTML = '✦';
+                sparkle.style.left = centerX + (Math.random() - 0.5) * 150 + 'px';
+                sparkle.style.top = centerY + (Math.random() - 0.5) * 100 + 'px';
+                sparkle.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+                sparkle.style.color = '#d4af37';
+                
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.classList.add('active'), 10);
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        }
+
+        function createWheel() {
+            const wheelSize = 352;
+            const centerX = wheelSize / 2;
+            const centerY = wheelSize / 2;
+            const radius = wheelSize / 2 - 4;
+            const labelRadius = 125;
+
+            // Create SVG for segments
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '100%');
+            svg.setAttribute('viewBox', `0 0 ${wheelSize} ${wheelSize}`);
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+
+            // Create gradient definitions
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            
+            notes.forEach((note, index) => {
+                const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+                gradient.setAttribute('id', `gradient${index}`);
+                gradient.setAttribute('x1', '0%');
+                gradient.setAttribute('y1', '0%');
+                gradient.setAttribute('x2', '100%');
+                gradient.setAttribute('y2', '100%');
+                
+                const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop1.setAttribute('offset', '0%');
+                stop1.setAttribute('style', `stop-color:${noteColors[index][0]};stop-opacity:1`);
+                
+                const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop2.setAttribute('offset', '100%');
+                stop2.setAttribute('style', `stop-color:${noteColors[index][1]};stop-opacity:1`);
+                
+                gradient.appendChild(stop1);
+                gradient.appendChild(stop2);
+                defs.appendChild(gradient);
+            });
+            
+            svg.appendChild(defs);
+
+            notes.forEach((note, index) => {
+                const offsetAngle = -90 - (segmentAngle / 2);
+                const startAngle = (index * segmentAngle + offsetAngle) * (Math.PI / 180);
+                const endAngle = ((index + 1) * segmentAngle + offsetAngle) * (Math.PI / 180);
+
+                const x1 = centerX + radius * Math.cos(startAngle);
+                const y1 = centerY + radius * Math.sin(startAngle);
+                const x2 = centerX + radius * Math.cos(endAngle);
+                const y2 = centerY + radius * Math.sin(endAngle);
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                const d = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
+                path.setAttribute('d', d);
+                path.setAttribute('fill', `url(#gradient${index})`);
+                path.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
+                path.setAttribute('stroke-width', '1');
+                path.setAttribute('data-index', index);
+                path.classList.add('segment-path');
+                
+                svg.appendChild(path);
+            });
+
+            wheel.appendChild(svg);
+
+            // Add labels
+            notes.forEach((note, index) => {
+                const label = document.createElement('div');
+                label.className = 'note-label';
+                label.textContent = note;
+                label.dataset.index = index;
+                
+                const midAngle = (index * segmentAngle - 90) * (Math.PI / 180);
+                const x = 180 + Math.cos(midAngle) * labelRadius;
+                const y = 180 + Math.sin(midAngle) * labelRadius;
+                
+                label.style.left = x + 'px';
+                label.style.top = y + 'px';
+                
+                wheel.appendChild(label);
+                labelElements.push({
+                    element: label,
+                    baseAngle: index * segmentAngle - 90
+                });
+            });
+        }
+
+        function getSelectedNote(rotation) {
+            let normalizedRotation = rotation % 360;
+            if (normalizedRotation < 0) normalizedRotation += 360;
+            
+            const index = Math.floor(((360 - normalizedRotation + segmentAngle / 2) % 360) / segmentAngle);
+            return { note: notes[index % totalNotes], index: index % totalNotes };
+        }
+
+        function highlightSegment(index) {
+            // Remove previous highlights
+            document.querySelectorAll('.note-label').forEach(label => {
+                label.classList.remove('highlight');
+            });
+            
+            // Add highlight to winning label
+            const winningLabel = document.querySelector(`.note-label[data-index="${index}"]`);
+            if (winningLabel) {
+                winningLabel.classList.add('highlight');
+            }
+        }
+
+        function getDelaySeconds() {
+            const value = parseInt(delayInput.value, 10);
+            if (isNaN(value) || value < 1) return 5;
+            if (value > 60) return 60;
+            return value;
+        }
+
+        function spin() {
+            if (isSpinning) return;
+            
+            clearTimers();
+            isSpinning = true;
+            isPaused = false;
+            
+            wheel.classList.add('spinning');
+            updateButtons();
+            status.textContent = 'Spinning...';
+            status.className = 'status spinning';
+            countdown.textContent = '';
+            countdown.classList.remove('pulse');
+            resultNote.classList.remove('pop');
+            resultNote.textContent = '?';
+
+            // Remove previous highlights
+            document.querySelectorAll('.note-label').forEach(label => {
+                label.classList.remove('highlight');
+            });
+
+            const randomSpins = Math.floor(Math.random() * 4) + 5;
+            const randomAngle = Math.floor(Math.random() * 360);
+            const totalRotation = currentRotation + (randomSpins * 360) + randomAngle;
+            
+            wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            // Animate labels
+            const startRotation = currentRotation;
+            const startTime = performance.now();
+            const duration = 4000;
+            
+            function animateLabels(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const currentRot = startRotation + (totalRotation - startRotation) * eased;
+                
+                labelElements.forEach(item => {
+                    item.element.style.transform = `translate(-50%, -50%) rotate(${-currentRot}deg)`;
+                });
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animateLabels);
+                }
+            }
+            
+            requestAnimationFrame(animateLabels);
+            currentRotation = totalRotation;
+
+            setTimeout(() => {
+                wheel.classList.remove('spinning');
+                
+                labelElements.forEach(item => {
+                    item.element.style.transform = `translate(-50%, -50%) rotate(${-currentRotation}deg)`;
+                });
+                
+                const result = getSelectedNote(currentRotation);
+                highlightSegment(result.index);
+                showResult(result.note);
+            }, 4000);
+        }
+
+        function showResult(note) {
+            isSpinning = false;
+            resultNote.textContent = note;
+            resultNote.classList.add('pop');
+            status.textContent = 'Note Selected';
+            status.className = 'status';
+            
+            // Celebration effects
+            createConfetti();
+            createSparkles();
+            
+            updateButtons();
+
+            if (autoMode.checked && !isPaused) {
+                startCountdown();
+            }
+        }
+
+        function startCountdown() {
+            countdownValue = getDelaySeconds();
+            updateCountdownDisplay();
+            countdown.classList.add('pulse');
+            
+            countdownTimer = setInterval(() => {
+                countdownValue--;
+                if (countdownValue <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownTimer = null;
+                    countdown.textContent = '';
+                    countdown.classList.remove('pulse');
+                    spin();
+                } else {
+                    updateCountdownDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateCountdownDisplay() {
+            countdown.textContent = `Next spin in ${countdownValue}s...`;
+        }
+
+        function pause() {
+            isPaused = true;
+            clearTimers();
+            status.textContent = 'Paused';
+            status.className = 'status';
+            countdown.textContent = '';
+            countdown.classList.remove('pulse');
+            updateButtons();
+        }
+
+        function stop() {
+            isPaused = false;
+            isSpinning = false;
+            clearTimers();
+            
+            status.textContent = 'Stopped';
+            status.className = 'status stopped';
+            countdown.textContent = '';
+            countdown.classList.remove('pulse');
+            resultNote.textContent = '?';
+            resultNote.classList.remove('pop');
+            
+            // Remove highlights
+            document.querySelectorAll('.note-label').forEach(label => {
+                label.classList.remove('highlight');
+            });
+            
+            updateButtons();
+        }
+
+        function clearTimers() {
+            if (countdownTimer) {
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+            }
+        }
+
+        function updateButtons() {
+            playBtn.disabled = isSpinning;
+            pauseBtn.disabled = !autoMode.checked || (!isSpinning && countdownTimer === null);
+            stopBtn.disabled = !isSpinning && countdownTimer === null && resultNote.textContent === '?';
+        }
+
+        function toggleDelayVisibility() {
+            if (autoMode.checked) {
+                delaySetting.classList.add('visible');
+            } else {
+                delaySetting.classList.remove('visible');
+            }
+        }
+
+        playBtn.addEventListener('click', () => {
+            isPaused = false;
+            spin();
+        });
+
+        pauseBtn.addEventListener('click', pause);
+        stopBtn.addEventListener('click', stop);
+
+        autoMode.addEventListener('change', () => {
+            toggleDelayVisibility();
+            
+            if (!autoMode.checked) {
+                clearTimers();
+                countdown.textContent = '';
+                countdown.classList.remove('pulse');
+            } else if (!isSpinning && !isPaused && resultNote.textContent !== '?') {
+                startCountdown();
+            }
+            updateButtons();
+        });
+
+        // Validate delay input
+        delayInput.addEventListener('change', () => {
+            let value = parseInt(delayInput.value, 10);
+            if (isNaN(value) || value < 1) {
+                delayInput.value = 1;
+            } else if (value > 60) {
+                delayInput.value = 60;
+            }
+        });
+
+        // Initialize
+        createWheel();
+        createFloatingNotes();
+        toggleDelayVisibility();
+        updateButtons();
+    </script>
+</body>
+</html>
