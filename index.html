@@ -102,7 +102,6 @@
             margin: 0 auto 30px;
         }
 
-        /* Outer glow ring */
         .wheel-glow {
             position: absolute;
             top: -15px;
@@ -415,26 +414,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             flex-wrap: wrap;
         }
 
-        .auto-toggle {
+        .setting-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .auto-toggle > label {
+        .setting-item > label,
+        .setting-item > span {
             color: #a0a0c0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
         }
 
         .switch {
             position: relative;
-            width: 56px;
-            height: 30px;
+            width: 50px;
+            height: 26px;
         }
 
         .switch input {
@@ -459,8 +459,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 24px;
-            width: 24px;
+            height: 20px;
+            width: 20px;
             left: 3px;
             bottom: 3px;
             background: linear-gradient(145deg, #fff, #e0e0e0);
@@ -475,13 +475,13 @@
         }
 
         input:checked + .slider:before {
-            transform: translateX(26px);
+            transform: translateX(24px);
         }
 
         .delay-setting {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -501,15 +501,15 @@
         }
 
         .delay-input {
-            width: 70px;
-            padding: 8px 12px;
-            font-size: 1rem;
+            width: 60px;
+            padding: 6px 10px;
+            font-size: 0.9rem;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             text-align: center;
             background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
             border: 2px solid #3a3a5a;
-            border-radius: 10px;
+            border-radius: 8px;
             color: #d4af37;
             outline: none;
             transition: all 0.3s ease;
@@ -523,12 +523,15 @@
         .delay-input::-webkit-inner-spin-button,
         .delay-input::-webkit-outer-spin-button {
             opacity: 1;
-            background: #2a2a4a;
         }
 
         .delay-unit {
             color: #a0a0c0;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+        }
+
+        .audio-icon {
+            font-size: 1.1rem;
         }
 
         .status {
@@ -605,7 +608,6 @@
             }
         }
 
-        /* Sparkles around result */
         .sparkle {
             position: absolute;
             pointer-events: none;
@@ -662,10 +664,7 @@
     </style>
 </head>
 <body>
-    <!-- Floating music notes background -->
     <div class="music-notes-bg" id="musicNotesBg"></div>
-
-    <!-- Confetti container -->
     <div class="confetti-container" id="confettiContainer"></div>
 
     <div class="container">
@@ -693,7 +692,7 @@
         </div>
 
         <div class="settings-row">
-            <div class="auto-toggle">
+            <div class="setting-item">
                 <label for="autoMode">Auto Roll</label>
                 <label class="switch">
                     <input type="checkbox" id="autoMode" checked>
@@ -705,6 +704,14 @@
                 <label for="delayInput">Delay:</label>
                 <input type="number" id="delayInput" class="delay-input" value="5" min="1" max="60">
                 <span class="delay-unit">sec</span>
+            </div>
+
+            <div class="setting-item">
+                <span class="audio-icon">🔊</span>
+                <label class="switch">
+                    <input type="checkbox" id="audioMode">
+                    <span class="slider"></span>
+                </label>
             </div>
         </div>
 
@@ -720,25 +727,21 @@
             'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'
         ];
 
-        // Rainbow gradient colors for each note
+        // Musical frequencies for soothing tones (piano-like)
+        const noteFrequencies = {
+            'C': 261.63, 'C#': 277.18, 'Db': 277.18, 'D': 293.66,
+            'D#': 311.13, 'Eb': 311.13, 'E': 329.63, 'F': 349.23,
+            'F#': 369.99, 'Gb': 369.99, 'G': 392.00, 'G#': 415.30,
+            'Ab': 415.30, 'A': 440.00, 'A#': 466.16, 'Bb': 466.16, 'B': 493.88
+        };
+
         const noteColors = [
-            ['#ff6b6b', '#ee5a5a'], // C - Red
-            ['#ff8e72', '#e67a5c'], // C# - Red-Orange
-            ['#ffa94d', '#e6943a'], // Db - Orange
-            ['#ffd43b', '#e6be2a'], // D - Yellow-Orange
-            ['#ffe066', '#e6ca52'], // D# - Yellow
-            ['#c0eb75', '#a8d45e'], // Eb - Yellow-Green
-            ['#69db7c', '#52c465'], // E - Green
-            ['#38d9a9', '#28c496'], // F - Teal
-            ['#3bc9db', '#2ab4c6'], // F# - Cyan
-            ['#4dabf7', '#3a96e2'], // Gb - Light Blue
-            ['#748ffc', '#5f7ae7'], // G - Blue
-            ['#9775fa', '#8260e5'], // G# - Blue-Purple
-            ['#b197fc', '#9c82e7'], // Ab - Purple
-            ['#da77f2', '#c562dd'], // A - Magenta
-            ['#f783ac', '#e26e97'], // A# - Pink
-            ['#ffa8a8', '#e69393'], // Bb - Light Pink
-            ['#ff6b6b', '#ee5a5a'], // B - Red (cycle)
+            ['#ff6b6b', '#ee5a5a'], ['#ff8e72', '#e67a5c'], ['#ffa94d', '#e6943a'],
+            ['#ffd43b', '#e6be2a'], ['#ffe066', '#e6ca52'], ['#c0eb75', '#a8d45e'],
+            ['#69db7c', '#52c465'], ['#38d9a9', '#28c496'], ['#3bc9db', '#2ab4c6'],
+            ['#4dabf7', '#3a96e2'], ['#748ffc', '#5f7ae7'], ['#9775fa', '#8260e5'],
+            ['#b197fc', '#9c82e7'], ['#da77f2', '#c562dd'], ['#f783ac', '#e26e97'],
+            ['#ffa8a8', '#e69393'], ['#ff6b6b', '#ee5a5a']
         ];
 
         const wheel = document.getElementById('wheel');
@@ -749,6 +752,7 @@
         const pauseBtn = document.getElementById('pauseBtn');
         const stopBtn = document.getElementById('stopBtn');
         const autoMode = document.getElementById('autoMode');
+        const audioMode = document.getElementById('audioMode');
         const delaySetting = document.getElementById('delaySetting');
         const delayInput = document.getElementById('delayInput');
         const status = document.getElementById('status');
@@ -761,14 +765,74 @@
         let countdownTimer = null;
         let countdownValue = 0;
         let labelElements = [];
+        let audioContext = null;
 
         const totalNotes = notes.length;
         const segmentAngle = 360 / totalNotes;
 
-        // Create floating music notes
+        // Initialize audio context on user interaction
+        function initAudio() {
+            if (!audioContext && audioMode.checked) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Soft tick sound - gentle chime
+        function playSoftTick() {
+            if (!audioMode.checked || !audioContext) return;
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            // Soft, high bell-like tone
+            osc.frequency.value = 1200 + Math.random() * 200;
+            osc.type = 'sine';
+            
+            // Very gentle volume with smooth fade
+            gain.gain.setValueAtTime(0, audioContext.currentTime);
+            gain.gain.linearRampToValueAtTime(0.03, audioContext.currentTime + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+            
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + 0.15);
+        }
+
+        // Soothing win sound - gentle ascending notes
+        function playSoothingWinSound(noteName) {
+            if (!audioMode.checked || !audioContext) return;
+            
+            const baseFreq = noteFrequencies[noteName] || 440;
+            
+            // Play a gentle arpeggio based on the selected note
+            const intervals = [1, 1.25, 1.5, 2]; // Root, major 3rd, 5th, octave
+            
+            intervals.forEach((interval, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    
+                    osc.frequency.value = baseFreq * interval;
+                    osc.type = 'sine';
+                    
+                    // Soft, warm envelope
+                    gain.gain.setValueAtTime(0, audioContext.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.8);
+                    
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.8);
+                }, i * 120);
+            });
+        }
+
         function createFloatingNotes() {
             const musicSymbols = ['♪', '♫', '♬', '♩', '𝄞'];
-            
             for (let i = 0; i < 15; i++) {
                 const note = document.createElement('div');
                 note.className = 'floating-note';
@@ -781,10 +845,8 @@
             }
         }
 
-        // Create confetti
         function createConfetti() {
             const colors = ['#d4af37', '#f5d67b', '#ff6b6b', '#4dabf7', '#69db7c', '#da77f2', '#ffd43b'];
-            
             for (let i = 0; i < 50; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
@@ -796,20 +858,16 @@
                 confetti.style.height = (5 + Math.random() * 10) + 'px';
                 confetti.style.animationDelay = Math.random() * 0.5 + 's';
                 confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
-                
                 confettiContainer.appendChild(confetti);
-                
                 setTimeout(() => confetti.classList.add('active'), 10);
                 setTimeout(() => confetti.remove(), 4000);
             }
         }
 
-        // Create sparkles
         function createSparkles() {
             const rect = resultDisplay.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            
             for (let i = 0; i < 8; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
@@ -818,9 +876,7 @@
                 sparkle.style.top = centerY + (Math.random() - 0.5) * 100 + 'px';
                 sparkle.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
                 sparkle.style.color = '#d4af37';
-                
                 document.body.appendChild(sparkle);
-                
                 setTimeout(() => sparkle.classList.add('active'), 10);
                 setTimeout(() => sparkle.remove(), 1000);
             }
@@ -833,7 +889,6 @@
             const radius = wheelSize / 2 - 4;
             const labelRadius = 125;
 
-            // Create SVG for segments
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('width', '100%');
             svg.setAttribute('height', '100%');
@@ -842,9 +897,7 @@
             svg.style.top = '0';
             svg.style.left = '0';
 
-            // Create gradient definitions
             const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-            
             notes.forEach((note, index) => {
                 const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
                 gradient.setAttribute('id', `gradient${index}`);
@@ -852,87 +905,62 @@
                 gradient.setAttribute('y1', '0%');
                 gradient.setAttribute('x2', '100%');
                 gradient.setAttribute('y2', '100%');
-                
                 const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop1.setAttribute('offset', '0%');
                 stop1.setAttribute('style', `stop-color:${noteColors[index][0]};stop-opacity:1`);
-                
                 const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop2.setAttribute('offset', '100%');
                 stop2.setAttribute('style', `stop-color:${noteColors[index][1]};stop-opacity:1`);
-                
                 gradient.appendChild(stop1);
                 gradient.appendChild(stop2);
                 defs.appendChild(gradient);
             });
-            
             svg.appendChild(defs);
 
             notes.forEach((note, index) => {
                 const offsetAngle = -90 - (segmentAngle / 2);
                 const startAngle = (index * segmentAngle + offsetAngle) * (Math.PI / 180);
                 const endAngle = ((index + 1) * segmentAngle + offsetAngle) * (Math.PI / 180);
-
                 const x1 = centerX + radius * Math.cos(startAngle);
                 const y1 = centerY + radius * Math.sin(startAngle);
                 const x2 = centerX + radius * Math.cos(endAngle);
                 const y2 = centerY + radius * Math.sin(endAngle);
-
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 const d = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
                 path.setAttribute('d', d);
                 path.setAttribute('fill', `url(#gradient${index})`);
                 path.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
                 path.setAttribute('stroke-width', '1');
-                path.setAttribute('data-index', index);
-                path.classList.add('segment-path');
-                
                 svg.appendChild(path);
             });
-
             wheel.appendChild(svg);
 
-            // Add labels
             notes.forEach((note, index) => {
                 const label = document.createElement('div');
                 label.className = 'note-label';
                 label.textContent = note;
                 label.dataset.index = index;
-                
                 const midAngle = (index * segmentAngle - 90) * (Math.PI / 180);
                 const x = 180 + Math.cos(midAngle) * labelRadius;
                 const y = 180 + Math.sin(midAngle) * labelRadius;
-                
                 label.style.left = x + 'px';
                 label.style.top = y + 'px';
-                
                 wheel.appendChild(label);
-                labelElements.push({
-                    element: label,
-                    baseAngle: index * segmentAngle - 90
-                });
+                labelElements.push({ element: label, baseAngle: index * segmentAngle - 90 });
             });
         }
 
         function getSelectedNote(rotation) {
             let normalizedRotation = rotation % 360;
             if (normalizedRotation < 0) normalizedRotation += 360;
-            
             const index = Math.floor(((360 - normalizedRotation + segmentAngle / 2) % 360) / segmentAngle);
             return { note: notes[index % totalNotes], index: index % totalNotes };
         }
 
         function highlightSegment(index) {
-            // Remove previous highlights
-            document.querySelectorAll('.note-label').forEach(label => {
-                label.classList.remove('highlight');
-            });
-            
-            // Add highlight to winning label
+            document.querySelectorAll('.note-label').forEach(label => label.classList.remove('highlight'));
             const winningLabel = document.querySelector(`.note-label[data-index="${index}"]`);
-            if (winningLabel) {
-                winningLabel.classList.add('highlight');
-            }
+            if (winningLabel) winningLabel.classList.add('highlight');
         }
 
         function getDelaySeconds() {
@@ -945,6 +973,7 @@
         function spin() {
             if (isSpinning) return;
             
+            initAudio();
             clearTimers();
             isSpinning = true;
             isPaused = false;
@@ -957,11 +986,7 @@
             countdown.classList.remove('pulse');
             resultNote.classList.remove('pop');
             resultNote.textContent = '?';
-
-            // Remove previous highlights
-            document.querySelectorAll('.note-label').forEach(label => {
-                label.classList.remove('highlight');
-            });
+            document.querySelectorAll('.note-label').forEach(label => label.classList.remove('highlight'));
 
             const randomSpins = Math.floor(Math.random() * 4) + 5;
             const randomAngle = Math.floor(Math.random() * 360);
@@ -970,26 +995,28 @@
             wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
-            // Animate labels
             const startRotation = currentRotation;
             const startTime = performance.now();
             const duration = 4000;
+            let lastTickAngle = startRotation;
             
             function animateLabels(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
-                // Easing
                 const eased = 1 - Math.pow(1 - progress, 3);
                 const currentRot = startRotation + (totalRotation - startRotation) * eased;
+                
+                // Play soft ticks
+                if (Math.floor(currentRot / segmentAngle) !== Math.floor(lastTickAngle / segmentAngle)) {
+                    playSoftTick();
+                }
+                lastTickAngle = currentRot;
                 
                 labelElements.forEach(item => {
                     item.element.style.transform = `translate(-50%, -50%) rotate(${-currentRot}deg)`;
                 });
                 
-                if (progress < 1) {
-                    requestAnimationFrame(animateLabels);
-                }
+                if (progress < 1) requestAnimationFrame(animateLabels);
             }
             
             requestAnimationFrame(animateLabels);
@@ -997,11 +1024,9 @@
 
             setTimeout(() => {
                 wheel.classList.remove('spinning');
-                
                 labelElements.forEach(item => {
                     item.element.style.transform = `translate(-50%, -50%) rotate(${-currentRotation}deg)`;
                 });
-                
                 const result = getSelectedNote(currentRotation);
                 highlightSegment(result.index);
                 showResult(result.note);
@@ -1015,15 +1040,12 @@
             status.textContent = 'Note Selected';
             status.className = 'status';
             
-            // Celebration effects
             createConfetti();
             createSparkles();
+            playSoothingWinSound(note);
             
             updateButtons();
-
-            if (autoMode.checked && !isPaused) {
-                startCountdown();
-            }
+            if (autoMode.checked && !isPaused) startCountdown();
         }
 
         function startCountdown() {
@@ -1063,19 +1085,13 @@
             isPaused = false;
             isSpinning = false;
             clearTimers();
-            
             status.textContent = 'Stopped';
             status.className = 'status stopped';
             countdown.textContent = '';
             countdown.classList.remove('pulse');
             resultNote.textContent = '?';
             resultNote.classList.remove('pop');
-            
-            // Remove highlights
-            document.querySelectorAll('.note-label').forEach(label => {
-                label.classList.remove('highlight');
-            });
-            
+            document.querySelectorAll('.note-label').forEach(label => label.classList.remove('highlight'));
             updateButtons();
         }
 
@@ -1100,17 +1116,12 @@
             }
         }
 
-        playBtn.addEventListener('click', () => {
-            isPaused = false;
-            spin();
-        });
-
+        playBtn.addEventListener('click', () => { isPaused = false; spin(); });
         pauseBtn.addEventListener('click', pause);
         stopBtn.addEventListener('click', stop);
 
         autoMode.addEventListener('change', () => {
             toggleDelayVisibility();
-            
             if (!autoMode.checked) {
                 clearTimers();
                 countdown.textContent = '';
@@ -1121,17 +1132,16 @@
             updateButtons();
         });
 
-        // Validate delay input
-        delayInput.addEventListener('change', () => {
-            let value = parseInt(delayInput.value, 10);
-            if (isNaN(value) || value < 1) {
-                delayInput.value = 1;
-            } else if (value > 60) {
-                delayInput.value = 60;
-            }
+        audioMode.addEventListener('change', () => {
+            if (audioMode.checked) initAudio();
         });
 
-        // Initialize
+        delayInput.addEventListener('change', () => {
+            let value = parseInt(delayInput.value, 10);
+            if (isNaN(value) || value < 1) delayInput.value = 1;
+            else if (value > 60) delayInput.value = 60;
+        });
+
         createWheel();
         createFloatingNotes();
         toggleDelayVisibility();
