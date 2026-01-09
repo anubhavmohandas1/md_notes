@@ -2,7 +2,7 @@
 
 A visually stunning, interactive musical note practice tool designed for **Musicians' Den**, Ahmedabad.
 
-**Live Demo:** Upload `note_spinner_final_v2.html` to your server and open in browser.
+**Live Demo:** https://anubhavmohandas1.github.io/md_notes/
 
 ---
 
