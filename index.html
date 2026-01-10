@@ -75,38 +75,53 @@
         .container {
             text-align: center;
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
             position: relative;
             z-index: 1;
         }
 
         .header-row {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             margin-bottom: 3px;
+            position: relative;
         }
 
         .theme-toggle {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
             cursor: pointer;
-            font-size: 1.4rem;
-            padding: 6px;
-            border-radius: 50%;
+            font-size: 1.6rem;
+            padding: 8px 12px;
+            border-radius: 30px;
             transition: all 0.3s ease;
             background: transparent;
-            border: none;
+            border: 2px solid transparent;
             line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        body.dark-mode .theme-toggle { color: #f5d67b; }
-        body.light-mode .theme-toggle { color: #00897b; }
+        body.dark-mode .theme-toggle { 
+            color: #f5d67b; 
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        body.light-mode .theme-toggle { 
+            color: #00897b; 
+            border-color: rgba(0, 137, 123, 0.3);
+        }
 
-        .theme-toggle:hover { transform: scale(1.1); }
-
-        .logo { flex: 1; }
+        .theme-toggle:hover { 
+            transform: translateY(-50%) scale(1.1); 
+            border-color: currentColor;
+        }
 
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 800;
             letter-spacing: 2px;
             transition: all 0.4s ease;
@@ -130,7 +145,7 @@
 
         .tagline {
             font-size: 0.75rem;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             letter-spacing: 3px;
             text-transform: uppercase;
             transition: color 0.4s ease;
@@ -144,12 +159,12 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .mode-btn {
-            padding: 6px 16px;
-            font-size: 0.75rem;
+            padding: 8px 20px;
+            font-size: 0.8rem;
             font-weight: 600;
             border: 2px solid;
             border-radius: 25px;
@@ -206,14 +221,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 25px;
+            gap: 40px;
             margin-bottom: 20px;
         }
 
         .wheel-wrapper {
             position: relative;
-            width: 340px;
-            height: 340px;
+            width: 380px;
+            height: 380px;
         }
 
         .wheel-glow {
@@ -249,25 +264,19 @@
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
         }
 
-        body.dark-mode .pointer::before {
-            border-top-color: #d4af37;
-        }
-
-        body.light-mode .pointer::before {
-            border-top-color: #00897b;
-        }
-
         .pointer::before {
             content: '';
             display: block;
             width: 0;
             height: 0;
-            border-left: 16px solid transparent;
-            border-right: 16px solid transparent;
-            border-top: 35px solid #d4af37;
-            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 38px solid;
             transition: border-top-color 0.4s ease;
         }
+
+        body.dark-mode .pointer::before { border-top-color: #d4af37; }
+        body.light-mode .pointer::before { border-top-color: #00897b; }
 
         .pointer::after {
             content: '';
@@ -277,15 +286,14 @@
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
-            border-top: 20px solid #f5d67b;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 22px solid;
             transition: border-top-color 0.4s ease;
         }
 
-        body.light-mode .pointer::after {
-            border-top-color: #4db6ac;
-        }
+        body.dark-mode .pointer::after { border-top-color: #f5d67b; }
+        body.light-mode .pointer::after { border-top-color: #4db6ac; }
 
         .wheel {
             width: 100%;
@@ -293,7 +301,7 @@
             border-radius: 50%;
             position: relative;
             transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99), box-shadow 0.4s ease, border-color 0.4s ease;
-            border: 4px solid;
+            border: 5px solid;
             overflow: visible;
         }
 
@@ -366,8 +374,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 55px;
-            height: 55px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             z-index: 10;
             animation: centerPulse 2s ease-in-out infinite;
@@ -401,18 +409,24 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             transition: color 0.4s ease;
         }
 
         body.dark-mode .center-circle::after { color: #1a1a3a; }
         body.light-mode .center-circle::after { color: #fff; }
 
-        /* Dice */
+        /* Dice Section */
+        .dice-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .dice-container {
-            perspective: 600px;
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
+            perspective: 400px;
         }
 
         .dice {
@@ -421,65 +435,66 @@
             position: relative;
             transform-style: preserve-3d;
             transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform: rotateX(-20deg) rotateY(20deg);
         }
 
         .dice-face {
             position: absolute;
-            width: 80px;
-            height: 80px;
-            border-radius: 12px;
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.85rem;
+            font-weight: 800;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             backface-visibility: hidden;
             border: 3px solid;
-            transition: all 0.4s ease;
         }
 
         body.dark-mode .dice-face.major {
             background: linear-gradient(145deg, #4ade80, #22c55e);
             border-color: #16a34a;
             color: #052e16;
-            box-shadow: inset 0 2px 10px rgba(255,255,255,0.3), inset 0 -2px 10px rgba(0,0,0,0.2);
+            box-shadow: inset 0 3px 15px rgba(255,255,255,0.4), inset 0 -3px 15px rgba(0,0,0,0.2);
         }
 
         body.dark-mode .dice-face.minor {
             background: linear-gradient(145deg, #f87171, #ef4444);
             border-color: #dc2626;
             color: #450a0a;
-            box-shadow: inset 0 2px 10px rgba(255,255,255,0.3), inset 0 -2px 10px rgba(0,0,0,0.2);
+            box-shadow: inset 0 3px 15px rgba(255,255,255,0.4), inset 0 -3px 15px rgba(0,0,0,0.2);
         }
 
         body.light-mode .dice-face.major {
             background: linear-gradient(145deg, #a7f3d0, #6ee7b7);
             border-color: #34d399;
             color: #064e3b;
-            box-shadow: inset 0 2px 10px rgba(255,255,255,0.5), inset 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: inset 0 3px 15px rgba(255,255,255,0.6), inset 0 -3px 15px rgba(0,0,0,0.1);
         }
 
         body.light-mode .dice-face.minor {
             background: linear-gradient(145deg, #fecaca, #fca5a5);
             border-color: #f87171;
             color: #7f1d1d;
-            box-shadow: inset 0 2px 10px rgba(255,255,255,0.5), inset 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: inset 0 3px 15px rgba(255,255,255,0.6), inset 0 -3px 15px rgba(0,0,0,0.1);
         }
 
-        /* Dice faces positioning */
-        .dice-face:nth-child(1) { transform: rotateY(0deg) translateZ(40px); }
-        .dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(40px); }
-        .dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(40px); }
-        .dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(40px); }
-        .dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(40px); }
-        .dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(40px); }
+        /* Dice faces - proper 3D cube positioning */
+        .dice-face.front  { transform: rotateY(0deg) translateZ(50px); }
+        .dice-face.back   { transform: rotateY(180deg) translateZ(50px); }
+        .dice-face.right  { transform: rotateY(90deg) translateZ(50px); }
+        .dice-face.left   { transform: rotateY(-90deg) translateZ(50px); }
+        .dice-face.top    { transform: rotateX(90deg) translateZ(50px); }
+        .dice-face.bottom { transform: rotateX(-90deg) translateZ(50px); }
 
         .dice-label {
             text-align: center;
-            margin-top: 10px;
-            font-size: 0.75rem;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: color 0.4s ease;
@@ -494,9 +509,9 @@
         }
 
         .result-note {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
-            min-height: 70px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -520,11 +535,11 @@
         }
 
         .result-quality {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             margin-top: 5px;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             transition: color 0.4s ease;
         }
 
@@ -547,7 +562,7 @@
 
         .countdown {
             font-size: 0.9rem;
-            height: 22px;
+            height: 24px;
             margin-top: 8px;
             transition: color 0.3s ease;
         }
@@ -566,14 +581,14 @@
 
         .controls {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 12px 26px;
-            font-size: 0.9rem;
+            padding: 14px 28px;
+            font-size: 0.95rem;
             font-weight: 700;
             border: none;
             border-radius: 50px;
@@ -605,40 +620,40 @@
         .btn-play {
             background: linear-gradient(145deg, #34ce57, #28a745, #1e7e34);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 4px 18px rgba(40, 167, 69, 0.4);
         }
 
         .btn-play:hover:not(:disabled) {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 6px 22px rgba(40, 167, 69, 0.5);
+            box-shadow: 0 6px 25px rgba(40, 167, 69, 0.5);
         }
 
         .btn-pause {
             background: linear-gradient(145deg, #f5d67b, #d4af37, #b8962e);
             color: #1a1a2e;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 18px rgba(212, 175, 55, 0.4);
         }
 
         body.light-mode .btn-pause {
             background: linear-gradient(145deg, #4db6ac, #00897b, #00695c);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4);
+            box-shadow: 0 4px 18px rgba(0, 137, 123, 0.4);
         }
 
         .btn-pause:hover:not(:disabled) {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 6px 22px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
         }
 
         .btn-stop {
             background: linear-gradient(145deg, #e4606d, #dc3545, #bd2130);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+            box-shadow: 0 4px 18px rgba(220, 53, 69, 0.4);
         }
 
         .btn-stop:hover:not(:disabled) {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 6px 22px rgba(220, 53, 69, 0.5);
+            box-shadow: 0 6px 25px rgba(220, 53, 69, 0.5);
         }
 
         .btn:disabled {
@@ -651,23 +666,23 @@
         .btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
 
         .settings-row {
-            margin-top: 15px;
+            margin-top: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             flex-wrap: wrap;
         }
 
         .setting-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .setting-item > label,
         .setting-item > span {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
             transition: color 0.4s ease;
         }
@@ -680,8 +695,8 @@
 
         .switch {
             position: relative;
-            width: 44px;
-            height: 24px;
+            width: 48px;
+            height: 26px;
         }
 
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -691,7 +706,7 @@
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             transition: 0.4s;
-            border-radius: 24px;
+            border-radius: 26px;
         }
 
         body.dark-mode .slider {
@@ -707,8 +722,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 18px;
-            width: 18px;
+            height: 20px;
+            width: 20px;
             left: 3px;
             bottom: 3px;
             background: linear-gradient(145deg, #fff, #e0e0e0);
@@ -727,12 +742,12 @@
             box-shadow: 0 0 12px rgba(0, 137, 123, 0.4);
         }
 
-        input:checked + .slider:before { transform: translateX(20px); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
         .delay-setting {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -746,7 +761,7 @@
         }
 
         .delay-setting label {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
         }
 
@@ -754,9 +769,9 @@
         body.light-mode .delay-setting label { color: #00796b; }
 
         .delay-input {
-            width: 55px;
-            padding: 5px 8px;
-            font-size: 0.85rem;
+            width: 58px;
+            padding: 6px 10px;
+            font-size: 0.9rem;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             text-align: center;
@@ -789,17 +804,17 @@
         }
 
         .delay-unit {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
         }
 
         body.dark-mode .delay-unit { color: #a0a0c0; }
         body.light-mode .delay-unit { color: #00796b; }
 
-        .audio-icon { font-size: 1rem; }
+        .audio-icon { font-size: 1.1rem; }
 
         .status {
-            margin-top: 12px;
-            font-size: 0.8rem;
+            margin-top: 15px;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 3px;
             transition: all 0.3s ease;
@@ -823,8 +838,8 @@
         .status.stopped { color: #dc3545; }
 
         footer {
-            margin-top: 20px;
-            font-size: 0.7rem;
+            margin-top: 25px;
+            font-size: 0.75rem;
             transition: color 0.4s ease;
         }
 
@@ -878,80 +893,89 @@
             100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .spin-area {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .dice-container {
-                width: 70px;
-                height: 70px;
-            }
-
-            .dice-face {
-                width: 70px;
-                height: 70px;
-                font-size: 0.75rem;
-            }
-
-            .dice-face:nth-child(1) { transform: rotateY(0deg) translateZ(35px); }
-            .dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(35px); }
-            .dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(35px); }
-            .dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(35px); }
-            .dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(35px); }
-            .dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(35px); }
+        /* Tablet */
+        @media (max-width: 768px) {
+            .wheel-wrapper { width: 320px; height: 320px; }
+            .dice-container { width: 90px; height: 90px; }
+            .dice-face { width: 90px; height: 90px; font-size: 0.85rem; }
+            .dice-face.front  { transform: rotateY(0deg) translateZ(45px); }
+            .dice-face.back   { transform: rotateY(180deg) translateZ(45px); }
+            .dice-face.right  { transform: rotateY(90deg) translateZ(45px); }
+            .dice-face.left   { transform: rotateY(-90deg) translateZ(45px); }
+            .dice-face.top    { transform: rotateX(90deg) translateZ(45px); }
+            .dice-face.bottom { transform: rotateX(-90deg) translateZ(45px); }
+            .spin-area { gap: 30px; }
         }
 
-        @media (max-width: 480px) {
-            body { padding: 10px 10px 25px; }
+        /* Mobile */
+        @media (max-width: 580px) {
+            body { padding: 12px 12px 25px; }
+
+            .spin-area {
+                flex-direction: column;
+                gap: 20px;
+            }
 
             .header-row { margin-bottom: 2px; }
-            .logo h1 { font-size: 1.4rem; }
-            .tagline { font-size: 0.6rem; margin-bottom: 5px; }
-            .theme-toggle { font-size: 1.1rem; padding: 4px; }
+            .logo h1 { font-size: 1.5rem; }
+            .tagline { font-size: 0.65rem; margin-bottom: 8px; }
+            
+            .theme-toggle { 
+                font-size: 1.3rem; 
+                padding: 6px 10px;
+                right: -5px;
+            }
 
-            .mode-selector { gap: 6px; margin-bottom: 10px; }
-            .mode-btn { padding: 5px 12px; font-size: 0.65rem; }
+            .mode-selector { gap: 8px; margin-bottom: 15px; }
+            .mode-btn { padding: 6px 14px; font-size: 0.7rem; }
             .mode-label { font-size: 0.55rem; }
 
             .wheel-wrapper { width: 280px; height: 280px; }
-            .center-circle { width: 45px; height: 45px; }
-            .center-circle::after { font-size: 1rem; }
+            .center-circle { width: 50px; height: 50px; }
+            .center-circle::after { font-size: 1.1rem; }
 
-            .dice-container { width: 60px; height: 60px; }
-            .dice-face { width: 60px; height: 60px; font-size: 0.65rem; }
-            .dice-face:nth-child(1) { transform: rotateY(0deg) translateZ(30px); }
-            .dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(30px); }
-            .dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(30px); }
-            .dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(30px); }
-            .dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(30px); }
-            .dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(30px); }
+            .dice-container { width: 75px; height: 75px; }
+            .dice-face { width: 75px; height: 75px; font-size: 0.7rem; border-radius: 12px; }
+            .dice-face.front  { transform: rotateY(0deg) translateZ(37.5px); }
+            .dice-face.back   { transform: rotateY(180deg) translateZ(37.5px); }
+            .dice-face.right  { transform: rotateY(90deg) translateZ(37.5px); }
+            .dice-face.left   { transform: rotateY(-90deg) translateZ(37.5px); }
+            .dice-face.top    { transform: rotateX(90deg) translateZ(37.5px); }
+            .dice-face.bottom { transform: rotateX(-90deg) translateZ(37.5px); }
+            .dice-label { margin-top: 10px; font-size: 0.7rem; }
 
-            .result-note { font-size: 2.8rem; min-height: 55px; }
-            .result-quality { font-size: 1rem; }
-            .countdown { font-size: 0.75rem; }
+            .result-note { font-size: 3rem; min-height: 60px; }
+            .result-quality { font-size: 1.1rem; letter-spacing: 3px; }
+            .countdown { font-size: 0.8rem; }
 
-            .controls { gap: 8px; }
-            .btn { padding: 10px 18px; font-size: 0.75rem; }
+            .controls { gap: 10px; }
+            .btn { padding: 11px 22px; font-size: 0.8rem; }
 
-            .settings-row { gap: 12px; margin-top: 12px; }
-            .setting-item > label, .setting-item > span { font-size: 0.7rem; }
-            .switch { width: 40px; height: 22px; }
-            .slider:before { height: 16px; width: 16px; }
+            .settings-row { gap: 15px; margin-top: 15px; }
+            .setting-item > label, .setting-item > span { font-size: 0.75rem; }
+            .switch { width: 42px; height: 24px; }
+            .slider:before { height: 18px; width: 18px; }
             input:checked + .slider:before { transform: translateX(18px); }
-            .delay-input { width: 48px; padding: 4px 6px; font-size: 0.75rem; }
+            .delay-input { width: 52px; padding: 5px 8px; font-size: 0.8rem; }
 
-            .status { font-size: 0.65rem; margin-top: 10px; }
-            footer { margin-top: 15px; font-size: 0.6rem; }
+            .status { font-size: 0.7rem; margin-top: 12px; }
+            footer { margin-top: 18px; font-size: 0.65rem; }
         }
 
+        /* Small mobile */
         @media (max-width: 360px) {
             .wheel-wrapper { width: 240px; height: 240px; }
-            .result-note { font-size: 2.2rem; }
-            .btn { padding: 8px 14px; font-size: 0.7rem; }
-            .mode-btn { padding: 4px 10px; font-size: 0.6rem; }
+            .result-note { font-size: 2.5rem; }
+            .btn { padding: 9px 16px; font-size: 0.75rem; }
+            .mode-btn { padding: 5px 12px; font-size: 0.65rem; }
+            .dice-container { width: 65px; height: 65px; }
+            .dice-face { width: 65px; height: 65px; font-size: 0.6rem; }
+            .dice-face.front  { transform: rotateY(0deg) translateZ(32.5px); }
+            .dice-face.back   { transform: rotateY(180deg) translateZ(32.5px); }
+            .dice-face.right  { transform: rotateY(90deg) translateZ(32.5px); }
+            .dice-face.left   { transform: rotateY(-90deg) translateZ(32.5px); }
+            .dice-face.top    { transform: rotateX(90deg) translateZ(32.5px); }
+            .dice-face.bottom { transform: rotateX(-90deg) translateZ(32.5px); }
         }
     </style>
 </head>
@@ -961,11 +985,10 @@
 
     <div class="container">
         <div class="header-row">
-            <button class="theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">🌙</button>
             <div class="logo">
                 <h1>♪ Musicians' Den</h1>
             </div>
-            <div style="width: 36px;"></div>
+            <button class="theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">🌙</button>
         </div>
         <p class="tagline">Your Dream Our Passion</p>
 
@@ -993,12 +1016,12 @@
             <div class="dice-section">
                 <div class="dice-container">
                     <div class="dice" id="dice">
-                        <div class="dice-face major">Major</div>
-                        <div class="dice-face minor">Minor</div>
-                        <div class="dice-face major">Major</div>
-                        <div class="dice-face minor">Minor</div>
-                        <div class="dice-face major">Major</div>
-                        <div class="dice-face minor">Minor</div>
+                        <div class="dice-face front major">Major</div>
+                        <div class="dice-face back minor">Minor</div>
+                        <div class="dice-face right minor">Minor</div>
+                        <div class="dice-face left major">Major</div>
+                        <div class="dice-face top major">Major</div>
+                        <div class="dice-face bottom minor">Minor</div>
                     </div>
                 </div>
                 <div class="dice-label">Quality</div>
@@ -1112,6 +1135,8 @@
         const mode17Btn = document.getElementById('mode17Btn');
 
         let currentRotation = 0;
+        let diceRotationX = -20;
+        let diceRotationY = 20;
         let isSpinning = false;
         let isPaused = false;
         let countdownTimer = null;
@@ -1121,37 +1146,6 @@
 
         let totalNotes = notes.length;
         let segmentAngle = 360 / totalNotes;
-
-        // Dice rotation states for Major/Minor
-        const diceRotations = {
-            major: [
-                { x: 0, y: 0 },      // Front - Major
-                { x: 0, y: 180 },    // Back - Minor (but we want Major)
-                { x: 0, y: -90 },    // Left - Major
-                { x: 0, y: 90 },     // Right - Minor (but we want Major)
-                { x: -90, y: 0 },    // Top - Major
-                { x: 90, y: 0 }      // Bottom - Minor (but we want Major)
-            ],
-            minor: [
-                { x: 0, y: 180 },    // Back - Minor
-                { x: 0, y: 90 },     // Right - Minor
-                { x: 90, y: 0 }      // Bottom - Minor
-            ]
-        };
-
-        // Get final rotation that shows Major
-        const majorFinalRotations = [
-            { x: 0, y: 0 },
-            { x: 0, y: -90 },
-            { x: -90, y: 0 }
-        ];
-
-        // Get final rotation that shows Minor
-        const minorFinalRotations = [
-            { x: 0, y: 180 },
-            { x: 0, y: 90 },
-            { x: 90, y: 0 }
-        ];
 
         // Theme toggle
         themeToggle.addEventListener('click', () => {
@@ -1189,7 +1183,9 @@
             wheel.style.transition = 'none';
             wheel.style.transform = 'rotate(0deg)';
             dice.style.transition = 'none';
-            dice.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            diceRotationX = -20;
+            diceRotationY = 20;
+            dice.style.transform = `rotateX(${diceRotationX}deg) rotateY(${diceRotationY}deg)`;
             updateButtons();
         }
 
@@ -1217,8 +1213,6 @@
         function playSoothingWinSound(noteName, isMinor) {
             if (!audioMode.checked || !audioContext) return;
             const baseFreq = noteFrequencies[noteName] || 440;
-            // Major: 1, 1.25 (major 3rd), 1.5 (5th)
-            // Minor: 1, 1.2 (minor 3rd), 1.5 (5th)
             const intervals = isMinor ? [1, 1.2, 1.5, 2] : [1, 1.25, 1.5, 2];
             intervals.forEach((interval, i) => {
                 setTimeout(() => {
@@ -1299,12 +1293,12 @@
             const wheelSize = wheelWrapper.offsetWidth;
             const centerX = wheelSize / 2;
             const centerY = wheelSize / 2;
-            const radius = wheelSize / 2 - 4;
+            const radius = wheelSize / 2 - 5;
             
             const labelRadius = currentMode === 12 ? radius * 0.65 : radius * 0.7;
             const fontSize = currentMode === 12 ? 
-                (wheelSize > 300 ? '0.8rem' : '0.65rem') : 
-                (wheelSize > 300 ? '1rem' : '0.8rem');
+                (wheelSize > 300 ? '0.85rem' : '0.7rem') : 
+                (wheelSize > 300 ? '1.05rem' : '0.85rem');
 
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('width', wheelSize);
@@ -1363,8 +1357,8 @@
                 label.textContent = note;
                 label.dataset.index = index;
                 label.style.fontSize = fontSize;
-                label.style.width = currentMode === 12 ? '45px' : '32px';
-                label.style.height = '32px';
+                label.style.width = currentMode === 12 ? '48px' : '34px';
+                label.style.height = '34px';
                 
                 const labelAngleDeg = index * segmentAngle - 90;
                 const labelAngle = labelAngleDeg * Math.PI / 180;
@@ -1435,15 +1429,41 @@
             // Dice spin - random Major or Minor
             const isMajor = Math.random() > 0.5;
             currentQuality = isMajor ? 'Major' : 'Minor';
-            const finalRotations = isMajor ? majorFinalRotations : minorFinalRotations;
-            const finalRot = finalRotations[Math.floor(Math.random() * finalRotations.length)];
             
-            // Add multiple full rotations for effect
-            const diceSpinsX = (Math.floor(Math.random() * 3) + 3) * 360;
-            const diceSpinsY = (Math.floor(Math.random() * 3) + 3) * 360;
+            // Dice rotations to show each face:
+            // Front (Major): rotateX(0) rotateY(0)
+            // Back (Minor): rotateX(0) rotateY(180)
+            // Right (Minor): rotateX(0) rotateY(-90)
+            // Left (Major): rotateX(0) rotateY(90)
+            // Top (Major): rotateX(-90) rotateY(0)
+            // Bottom (Minor): rotateX(90) rotateY(0)
+            
+            const majorEndings = [
+                { x: 0, y: 0 },      // Front
+                { x: 0, y: 90 },     // Left
+                { x: -90, y: 0 }     // Top
+            ];
+            const minorEndings = [
+                { x: 0, y: 180 },    // Back
+                { x: 0, y: -90 },    // Right
+                { x: 90, y: 0 }      // Bottom
+            ];
+            
+            const endings = isMajor ? majorEndings : minorEndings;
+            const finalPos = endings[Math.floor(Math.random() * endings.length)];
+            
+            // Add multiple full rotations
+            const spinsX = (Math.floor(Math.random() * 3) + 4) * 360;
+            const spinsY = (Math.floor(Math.random() * 3) + 4) * 360;
+            
+            const newX = diceRotationX + spinsX + (finalPos.x - (diceRotationX % 360));
+            const newY = diceRotationY + spinsY + (finalPos.y - (diceRotationY % 360));
             
             dice.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
-            dice.style.transform = `rotateX(${diceSpinsX + finalRot.x}deg) rotateY(${diceSpinsY + finalRot.y}deg)`;
+            dice.style.transform = `rotateX(${newX}deg) rotateY(${newY}deg)`;
+            
+            diceRotationX = newX;
+            diceRotationY = newY;
             
             const startRotation = currentRotation;
             const startTime = performance.now();
