@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Note Spinner | Musicians' Den</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -12,21 +12,37 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: #fff;
-            overflow: hidden;
-            padding: 20px;
+            padding: 20px 15px;
             position: relative;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* Floating music notes background */
+        /* Dark Mode (Default) */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+        }
+
+        /* Light Mode */
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 50%, #d5dce3 100%);
+            color: #2c3e50;
+        }
+
         .music-notes-bg {
             position: fixed;
             top: 0;
@@ -41,65 +57,159 @@
         .floating-note {
             position: absolute;
             font-size: 2rem;
-            opacity: 0.15;
+            opacity: 0.12;
             animation: floatUp 15s linear infinite;
-            color: #d4af37;
+            transition: color 0.4s ease;
         }
 
+        body.dark-mode .floating-note { color: #d4af37; }
+        body.light-mode .floating-note { color: #8b7355; opacity: 0.15; }
+
         @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.15;
-            }
-            90% {
-                opacity: 0.15;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.12; }
+            90% { opacity: 0.12; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
         .container {
             text-align: center;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             position: relative;
             z-index: 1;
         }
 
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: none;
+            line-height: 1;
+        }
+
+        body.dark-mode .theme-toggle { color: #f5d67b; }
+        body.light-mode .theme-toggle { color: #5a5a5a; }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
         .logo {
-            margin-bottom: 15px;
+            flex: 1;
         }
 
         .logo h1 {
             font-size: 2rem;
             font-weight: 800;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+        }
+
+        body.dark-mode .logo h1 {
             background: linear-gradient(135deg, #d4af37 0%, #f5d67b 50%, #d4af37 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: 2px;
-            text-shadow: none;
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
         }
 
-        .tagline {
-            color: #a0a0c0;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+        body.light-mode .logo h1 {
+            background: linear-gradient(135deg, #8b6914 0%, #b8860b 50%, #8b6914 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(139, 105, 20, 0.3));
         }
 
-        .wheel-container {
+        .tagline {
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: color 0.4s ease;
+        }
+
+        body.dark-mode .tagline { color: #a0a0c0; }
+        body.light-mode .tagline { color: #666; }
+
+        /* Mode Selector */
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 2px solid;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        body.dark-mode .mode-btn {
+            background: transparent;
+            border-color: #4a4a6a;
+            color: #a0a0c0;
+        }
+
+        body.dark-mode .mode-btn:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+
+        body.dark-mode .mode-btn.active {
+            background: linear-gradient(145deg, #d4af37, #b8962e);
+            border-color: #d4af37;
+            color: #1a1a2e;
+        }
+
+        body.light-mode .mode-btn {
+            background: transparent;
+            border-color: #ccc;
+            color: #666;
+        }
+
+        body.light-mode .mode-btn:hover {
+            border-color: #8b6914;
+            color: #8b6914;
+        }
+
+        body.light-mode .mode-btn.active {
+            background: linear-gradient(145deg, #d4af37, #b8962e);
+            border-color: #b8962e;
+            color: #fff;
+        }
+
+        .mode-label {
+            font-size: 0.7rem;
+            display: block;
+            margin-top: 2px;
+            opacity: 0.7;
+        }
+
+        .wheel-wrapper {
             position: relative;
-            width: 360px;
-            height: 360px;
-            margin: 0 auto 30px;
+            width: 420px;
+            height: 420px;
+            margin: 0 auto 25px;
         }
 
         .wheel-glow {
@@ -109,19 +219,54 @@
             right: -15px;
             bottom: -15px;
             border-radius: 50%;
-            background: radial-gradient(circle, transparent 60%, rgba(212, 175, 55, 0.3) 100%);
             animation: pulseGlow 2s ease-in-out infinite;
+            transition: background 0.4s ease;
+        }
+
+        body.dark-mode .wheel-glow {
+            background: radial-gradient(circle, transparent 60%, rgba(212, 175, 55, 0.25) 100%);
+        }
+
+        body.light-mode .wheel-glow {
+            background: radial-gradient(circle, transparent 60%, rgba(184, 150, 46, 0.2) 100%);
         }
 
         @keyframes pulseGlow {
-            0%, 100% {
-                opacity: 0.5;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.02);
-            }
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        .pointer {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+        }
+
+        .pointer::before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 42px solid #d4af37;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+        }
+
+        .pointer::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 11px solid transparent;
+            border-right: 11px solid transparent;
+            border-top: 24px solid #f5d67b;
         }
 
         .wheel {
@@ -129,60 +274,81 @@
             height: 100%;
             border-radius: 50%;
             position: relative;
-            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-            box-shadow: 
-                0 0 60px rgba(212, 175, 55, 0.4),
-                0 0 100px rgba(212, 175, 55, 0.2),
-                inset 0 0 60px rgba(0, 0, 0, 0.6);
-            border: 5px solid;
-            border-color: #d4af37;
-            background: #1a1a3a;
-            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99), box-shadow 0.4s ease;
+            border: 5px solid #d4af37;
+            overflow: visible;
         }
 
-        .wheel::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            background: linear-gradient(135deg, #d4af37, #f5d67b, #d4af37) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: destination-out;
-            mask-composite: exclude;
-            pointer-events: none;
+        body.dark-mode .wheel {
+            box-shadow: 
+                0 0 50px rgba(212, 175, 55, 0.35),
+                0 0 100px rgba(212, 175, 55, 0.15),
+                inset 0 0 50px rgba(0, 0, 0, 0.5);
+            background: #1a1a3a;
+        }
+
+        body.light-mode .wheel {
+            box-shadow: 
+                0 0 40px rgba(184, 150, 46, 0.25),
+                0 0 80px rgba(184, 150, 46, 0.1),
+                inset 0 0 30px rgba(0, 0, 0, 0.1);
+            background: #f0f0f0;
         }
 
         .wheel.spinning {
             box-shadow: 
-                0 0 80px rgba(212, 175, 55, 0.6),
-                0 0 120px rgba(212, 175, 55, 0.3),
-                inset 0 0 60px rgba(0, 0, 0, 0.6);
+                0 0 70px rgba(212, 175, 55, 0.5),
+                0 0 120px rgba(212, 175, 55, 0.25),
+                inset 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .wheel svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .wheel-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
 
         .note-label {
             position: absolute;
-            font-size: 1rem;
             font-weight: 700;
-            color: #fff;
-            text-shadow: 
-                0 0 10px rgba(255, 255, 255, 0.8),
-                2px 2px 4px rgba(0, 0, 0, 0.9);
             pointer-events: none;
             white-space: nowrap;
-            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
         }
 
-        .note-label.highlight {
-            font-size: 1.3rem;
+        body.dark-mode .note-label {
+            color: #fff;
             text-shadow: 
-                0 0 20px rgba(255, 255, 255, 1),
-                0 0 40px rgba(212, 175, 55, 0.8);
+                1px 1px 3px rgba(0, 0, 0, 0.9),
+                0 0 10px rgba(0, 0, 0, 0.6);
+        }
+
+        body.light-mode .note-label {
+            color: #fff;
+            text-shadow: 
+                1px 1px 3px rgba(0, 0, 0, 0.7),
+                0 0 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .note-label.highlight {
+            text-shadow: 
+                0 0 15px rgba(255, 255, 255, 1),
+                0 0 30px rgba(212, 175, 55, 0.8),
+                0 0 45px rgba(212, 175, 55, 0.5);
         }
 
         .center-circle {
@@ -196,7 +362,7 @@
             border-radius: 50%;
             z-index: 10;
             box-shadow: 
-                0 0 30px rgba(212, 175, 55, 0.8),
+                0 0 30px rgba(212, 175, 55, 0.7),
                 inset 0 -5px 15px rgba(0, 0, 0, 0.3),
                 inset 0 5px 15px rgba(255, 255, 255, 0.3);
             animation: centerPulse 2s ease-in-out infinite;
@@ -205,14 +371,14 @@
         @keyframes centerPulse {
             0%, 100% {
                 box-shadow: 
-                    0 0 30px rgba(212, 175, 55, 0.8),
+                    0 0 30px rgba(212, 175, 55, 0.7),
                     inset 0 -5px 15px rgba(0, 0, 0, 0.3),
                     inset 0 5px 15px rgba(255, 255, 255, 0.3);
             }
             50% {
                 box-shadow: 
-                    0 0 50px rgba(212, 175, 55, 1),
-                    0 0 80px rgba(212, 175, 55, 0.5),
+                    0 0 50px rgba(212, 175, 55, 0.9),
+                    0 0 70px rgba(212, 175, 55, 0.4),
                     inset 0 -5px 15px rgba(0, 0, 0, 0.3),
                     inset 0 5px 15px rgba(255, 255, 255, 0.3);
             }
@@ -224,42 +390,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: #1a1a3a;
-            text-shadow: none;
-        }
-
-        .pointer {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
-        }
-
-        .pointer::before {
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-left: 22px solid transparent;
-            border-right: 22px solid transparent;
-            border-top: 45px solid #d4af37;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
-        }
-
-        .pointer::after {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 25px solid #f5d67b;
         }
 
         .result-display {
@@ -268,18 +400,29 @@
         }
 
         .result-note {
-            font-size: 5rem;
+            font-size: 4.5rem;
             font-weight: 800;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        body.dark-mode .result-note {
             background: linear-gradient(135deg, #d4af37 0%, #f5d67b 50%, #d4af37 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6));
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.5));
+        }
+
+        body.light-mode .result-note {
+            background: linear-gradient(135deg, #8b6914 0%, #b8860b 50%, #8b6914 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 15px rgba(139, 105, 20, 0.4));
         }
 
         .result-note.pop {
@@ -287,42 +430,29 @@
         }
 
         @keyframes popIn {
-            0% {
-                transform: scale(0.3) rotate(-10deg);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2) rotate(5deg);
-            }
-            70% {
-                transform: scale(0.9) rotate(-2deg);
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); }
+            70% { transform: scale(0.9) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         .countdown {
             font-size: 1rem;
-            color: #a0a0c0;
             height: 24px;
-            margin-top: 8px;
+            margin-top: 6px;
             transition: color 0.3s ease;
         }
+
+        body.dark-mode .countdown { color: #a0a0c0; }
+        body.light-mode .countdown { color: #666; }
 
         .countdown.pulse {
             animation: countdownPulse 1s ease-in-out infinite;
         }
 
         @keyframes countdownPulse {
-            0%, 100% {
-                color: #a0a0c0;
-            }
-            50% {
-                color: #d4af37;
-                text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            }
+            0%, 100% { opacity: 1; }
+            50% { color: #d4af37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
         }
 
         .controls {
@@ -333,7 +463,7 @@
         }
 
         .btn {
-            padding: 14px 32px;
+            padding: 14px 30px;
             font-size: 1rem;
             font-weight: 700;
             border: none;
@@ -342,7 +472,7 @@
             transition: all 0.3s ease;
             font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -361,9 +491,7 @@
             transition: left 0.5s ease;
         }
 
-        .btn:hover::before {
-            left: 100%;
-        }
+        .btn:hover::before { left: 100%; }
 
         .btn-play {
             background: linear-gradient(145deg, #34ce57, #28a745, #1e7e34);
@@ -372,8 +500,8 @@
         }
 
         .btn-play:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 30px rgba(40, 167, 69, 0.6);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 28px rgba(40, 167, 69, 0.5);
         }
 
         .btn-pause {
@@ -383,8 +511,8 @@
         }
 
         .btn-pause:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 28px rgba(212, 175, 55, 0.5);
         }
 
         .btn-stop {
@@ -394,8 +522,8 @@
         }
 
         .btn-stop:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 30px rgba(220, 53, 69, 0.6);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 28px rgba(220, 53, 69, 0.5);
         }
 
         .btn:disabled {
@@ -405,9 +533,7 @@
             box-shadow: none;
         }
 
-        .btn:active:not(:disabled) {
-            transform: translateY(0) scale(0.98);
-        }
+        .btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
 
         .settings-row {
             margin-top: 20px;
@@ -426,10 +552,16 @@
 
         .setting-item > label,
         .setting-item > span {
-            color: #a0a0c0;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             letter-spacing: 1px;
+            transition: color 0.4s ease;
         }
+
+        body.dark-mode .setting-item > label,
+        body.dark-mode .setting-item > span { color: #a0a0c0; }
+
+        body.light-mode .setting-item > label,
+        body.light-mode .setting-item > span { color: #666; }
 
         .switch {
             position: relative;
@@ -437,23 +569,24 @@
             height: 26px;
         }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .switch input { opacity: 0; width: 0; height: 0; }
 
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+            top: 0; left: 0; right: 0; bottom: 0;
             transition: 0.4s;
-            border-radius: 30px;
+            border-radius: 26px;
+        }
+
+        body.dark-mode .slider {
+            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
             box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-mode .slider {
+            background: linear-gradient(145deg, #ccc, #aaa);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.15);
         }
 
         .slider:before {
@@ -466,17 +599,15 @@
             background: linear-gradient(145deg, #fff, #e0e0e0);
             transition: 0.4s;
             border-radius: 50%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         input:checked + .slider {
             background: linear-gradient(145deg, #d4af37, #b8962e);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
 
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
+        input:checked + .slider:before { transform: translateX(24px); }
 
         .delay-setting {
             display: flex;
@@ -495,24 +626,36 @@
         }
 
         .delay-setting label {
-            color: #a0a0c0;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             letter-spacing: 1px;
         }
+
+        body.dark-mode .delay-setting label { color: #a0a0c0; }
+        body.light-mode .delay-setting label { color: #666; }
 
         .delay-input {
             width: 60px;
             padding: 6px 10px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             text-align: center;
-            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
-            border: 2px solid #3a3a5a;
+            border: 2px solid;
             border-radius: 8px;
             color: #d4af37;
             outline: none;
             transition: all 0.3s ease;
+        }
+
+        body.dark-mode .delay-input {
+            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+            border-color: #3a3a5a;
+        }
+
+        body.light-mode .delay-input {
+            background: #fff;
+            border-color: #ccc;
+            color: #8b6914;
         }
 
         .delay-input:focus {
@@ -520,28 +663,25 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
-        .delay-input::-webkit-inner-spin-button,
-        .delay-input::-webkit-outer-spin-button {
-            opacity: 1;
-        }
-
         .delay-unit {
-            color: #a0a0c0;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
-        .audio-icon {
-            font-size: 1.1rem;
-        }
+        body.dark-mode .delay-unit { color: #a0a0c0; }
+        body.light-mode .delay-unit { color: #666; }
+
+        .audio-icon { font-size: 1.1rem; }
 
         .status {
             margin-top: 15px;
             font-size: 0.9rem;
-            color: #666;
             text-transform: uppercase;
             letter-spacing: 3px;
             transition: all 0.3s ease;
         }
+
+        body.dark-mode .status { color: #666; }
+        body.light-mode .status { color: #999; }
 
         .status.spinning {
             color: #d4af37;
@@ -554,15 +694,16 @@
             50% { opacity: 0.6; }
         }
 
-        .status.stopped {
-            color: #dc3545;
-        }
+        .status.stopped { color: #dc3545; }
 
         footer {
-            margin-top: 35px;
-            color: #555;
+            margin-top: 30px;
             font-size: 0.8rem;
+            transition: color 0.4s ease;
         }
+
+        body.dark-mode footer { color: #555; }
+        body.light-mode footer { color: #999; }
 
         footer a {
             color: #d4af37;
@@ -570,17 +711,12 @@
             transition: all 0.3s ease;
         }
 
-        footer a:hover {
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
+        footer a:hover { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
 
-        /* Confetti */
         .confetti-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 100;
             overflow: hidden;
@@ -593,19 +729,11 @@
             opacity: 0;
         }
 
-        .confetti.active {
-            animation: confettiFall 3s ease-out forwards;
-        }
+        .confetti.active { animation: confettiFall 3s ease-out forwards; }
 
         @keyframes confettiFall {
-            0% {
-                opacity: 1;
-                transform: translateY(0) rotate(0deg) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(100vh) rotate(720deg) scale(0.5);
-            }
+            0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.5); }
         }
 
         .sparkle {
@@ -614,69 +742,99 @@
             opacity: 0;
         }
 
-        .sparkle.active {
-            animation: sparkle 0.8s ease-out forwards;
-        }
+        .sparkle.active { animation: sparkle 0.8s ease-out forwards; }
 
         @keyframes sparkle {
-            0% {
-                opacity: 1;
-                transform: scale(0) rotate(0deg);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1) rotate(180deg);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0.5) rotate(360deg);
-            }
+            0% { opacity: 1; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+            100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
         }
 
-        @media (max-width: 420px) {
-            .wheel-container {
-                width: 300px;
-                height: 300px;
+        /* Tablet */
+        @media (max-width: 768px) {
+            .wheel-wrapper { width: 380px; height: 380px; }
+            .result-note { font-size: 4rem; }
+            .logo h1 { font-size: 1.8rem; }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+                justify-content: flex-start;
+                padding-top: 15px;
             }
 
-            .result-note {
-                font-size: 4rem;
-            }
+            .header-row { margin-bottom: 3px; }
+            .logo h1 { font-size: 1.4rem; }
+            .tagline { font-size: 0.65rem; margin-bottom: 6px; }
+            .theme-toggle { font-size: 1.2rem; padding: 5px; }
 
-            .btn {
-                padding: 12px 22px;
-                font-size: 0.85rem;
-            }
+            .mode-selector { gap: 8px; margin-bottom: 15px; }
+            .mode-btn { padding: 6px 14px; font-size: 0.7rem; }
+            .mode-label { font-size: 0.6rem; }
 
-            .note-label {
-                font-size: 0.85rem;
-            }
+            .wheel-wrapper { width: 300px; height: 300px; margin-bottom: 18px; }
+            .center-circle { width: 50px; height: 50px; }
+            .center-circle::after { font-size: 1.2rem; }
 
-            .logo h1 {
-                font-size: 1.6rem;
-            }
+            .result-note { font-size: 3rem; min-height: 65px; }
+            .countdown { font-size: 0.8rem; }
 
-            .settings-row {
-                flex-direction: column;
-                gap: 15px;
-            }
+            .controls { gap: 10px; }
+            .btn { padding: 10px 18px; font-size: 0.8rem; }
+
+            .settings-row { gap: 12px; margin-top: 12px; }
+            .setting-item > label, .setting-item > span { font-size: 0.75rem; }
+            .switch { width: 42px; height: 22px; }
+            .slider:before { height: 16px; width: 16px; }
+            input:checked + .slider:before { transform: translateX(20px); }
+            .delay-input { width: 50px; padding: 4px 6px; font-size: 0.8rem; }
+
+            .status { font-size: 0.7rem; margin-top: 10px; }
+            footer { margin-top: 15px; font-size: 0.65rem; }
+        }
+
+        /* Small mobile */
+        @media (max-width: 360px) {
+            .wheel-wrapper { width: 260px; height: 260px; }
+            .result-note { font-size: 2.5rem; }
+            .btn { padding: 8px 14px; font-size: 0.75rem; }
+            .mode-btn { padding: 5px 10px; font-size: 0.65rem; }
         }
     </style>
 </head>
-<body>
+<body class="dark-mode">
     <div class="music-notes-bg" id="musicNotesBg"></div>
     <div class="confetti-container" id="confettiContainer"></div>
 
     <div class="container">
-        <div class="logo">
-            <h1>♪ Musicians' Den</h1>
+        <div class="header-row">
+            <button class="theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">🌙</button>
+            <div class="logo">
+                <h1>♪ Musicians' Den</h1>
+            </div>
+            <div style="width: 40px;"></div>
         </div>
         <p class="tagline">Your Dream Our Passion</p>
 
-        <div class="wheel-container">
+        <div class="mode-selector">
+            <button class="mode-btn active" id="mode12Btn" data-mode="12">
+                12 Notes
+                <span class="mode-label">Basic</span>
+            </button>
+            <button class="mode-btn" id="mode17Btn" data-mode="17">
+                17 Notes
+                <span class="mode-label">Intermediate</span>
+            </button>
+        </div>
+
+        <div class="wheel-wrapper" id="wheelWrapper">
             <div class="wheel-glow"></div>
             <div class="pointer"></div>
-            <div class="wheel" id="wheel"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-labels" id="wheelLabels"></div>
+            </div>
             <div class="center-circle"></div>
         </div>
 
@@ -723,28 +881,58 @@
     </div>
 
     <script>
-        const notes = [
-            'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'
+        // Note configurations
+        const notes12 = [
+            'C', 'C#/D♭', 'D', 'D#/E♭', 'E', 'F', 'F#/G♭', 'G', 'G#/A♭', 'A', 'A#/B♭', 'B'
         ];
 
-        // Musical frequencies for soothing tones (piano-like)
+        const notes17 = [
+            'C', 'C#', 'D♭', 'D', 'D#', 'E♭', 'E', 'F', 'F#', 'G♭', 'G', 'G#', 'A♭', 'A', 'A#', 'B♭', 'B'
+        ];
+
+        // Colors for 12 notes
+        const colors12 = [
+            ['#d9736d', '#c9635d'], // C
+            ['#d9956a', '#c9855a'], // C#/Db
+            ['#d9b95c', '#c9a94c'], // D
+            ['#c9d96e', '#b9c95e'], // D#/Eb
+            ['#6db97a', '#5da96a'], // E
+            ['#5cb9a8', '#4ca998'], // F
+            ['#5cafd9', '#4c9fc9'], // F#/Gb
+            ['#6a8fd9', '#5a7fc9'], // G
+            ['#8a7fd9', '#7a6fc9'], // G#/Ab
+            ['#b07fd9', '#a06fc9'], // A
+            ['#d97faf', '#c96f9f'], // A#/Bb
+            ['#d9736d', '#c9635d'], // B
+        ];
+
+        // Colors for 17 notes
+        const colors17 = [
+            ['#d9736d', '#c9635d'], ['#d9896a', '#c97a5a'], ['#d9a066', '#c99156'],
+            ['#d9b95c', '#c9a94c'], ['#d9cb6e', '#c9bb5e'], ['#a8c96e', '#98b95e'],
+            ['#6db97a', '#5da96a'], ['#5cb99e', '#4ca98e'], ['#5cb9bf', '#4ca9af'],
+            ['#6a9fd9', '#5a8fc9'], ['#7a8fd9', '#6a7fc9'], ['#937fd9', '#836fc9'],
+            ['#a68fd9', '#967fc9'], ['#bf7fc9', '#af6fb9'], ['#d97fa3', '#c96f93'],
+            ['#d99a9a', '#c98a8a'], ['#d9736d', '#c9635d']
+        ];
+
         const noteFrequencies = {
-            'C': 261.63, 'C#': 277.18, 'Db': 277.18, 'D': 293.66,
-            'D#': 311.13, 'Eb': 311.13, 'E': 329.63, 'F': 349.23,
-            'F#': 369.99, 'Gb': 369.99, 'G': 392.00, 'G#': 415.30,
-            'Ab': 415.30, 'A': 440.00, 'A#': 466.16, 'Bb': 466.16, 'B': 493.88
+            'C': 261.63, 'C#': 277.18, 'C#/D♭': 277.18, 'D♭': 277.18, 'Db': 277.18,
+            'D': 293.66, 'D#': 311.13, 'D#/E♭': 311.13, 'E♭': 311.13, 'Eb': 311.13,
+            'E': 329.63, 'F': 349.23, 'F#': 369.99, 'F#/G♭': 369.99, 'G♭': 369.99, 'Gb': 369.99,
+            'G': 392.00, 'G#': 415.30, 'G#/A♭': 415.30, 'A♭': 415.30, 'Ab': 415.30,
+            'A': 440.00, 'A#': 466.16, 'A#/B♭': 466.16, 'B♭': 466.16, 'Bb': 466.16, 'B': 493.88
         };
 
-        const noteColors = [
-            ['#ff6b6b', '#ee5a5a'], ['#ff8e72', '#e67a5c'], ['#ffa94d', '#e6943a'],
-            ['#ffd43b', '#e6be2a'], ['#ffe066', '#e6ca52'], ['#c0eb75', '#a8d45e'],
-            ['#69db7c', '#52c465'], ['#38d9a9', '#28c496'], ['#3bc9db', '#2ab4c6'],
-            ['#4dabf7', '#3a96e2'], ['#748ffc', '#5f7ae7'], ['#9775fa', '#8260e5'],
-            ['#b197fc', '#9c82e7'], ['#da77f2', '#c562dd'], ['#f783ac', '#e26e97'],
-            ['#ffa8a8', '#e69393'], ['#ff6b6b', '#ee5a5a']
-        ];
+        // State
+        let currentMode = 12;
+        let notes = notes12;
+        let noteColors = colors12;
+        let isDarkMode = true;
 
         const wheel = document.getElementById('wheel');
+        const wheelWrapper = document.getElementById('wheelWrapper');
+        const wheelLabels = document.getElementById('wheelLabels');
         const resultNote = document.getElementById('resultNote');
         const resultDisplay = document.getElementById('resultDisplay');
         const countdown = document.getElementById('countdown');
@@ -758,6 +946,9 @@
         const status = document.getElementById('status');
         const confettiContainer = document.getElementById('confettiContainer');
         const musicNotesBg = document.getElementById('musicNotesBg');
+        const themeToggle = document.getElementById('themeToggle');
+        const mode12Btn = document.getElementById('mode12Btn');
+        const mode17Btn = document.getElementById('mode17Btn');
 
         let currentRotation = 0;
         let isSpinning = false;
@@ -767,95 +958,113 @@
         let labelElements = [];
         let audioContext = null;
 
-        const totalNotes = notes.length;
-        const segmentAngle = 360 / totalNotes;
+        let totalNotes = notes.length;
+        let segmentAngle = 360 / totalNotes;
 
-        // Initialize audio context on user interaction
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            document.body.classList.toggle('light-mode', !isDarkMode);
+            themeToggle.textContent = isDarkMode ? '🌙' : '☀️';
+        });
+
+        // Mode toggle
+        mode12Btn.addEventListener('click', () => switchMode(12));
+        mode17Btn.addEventListener('click', () => switchMode(17));
+
+        function switchMode(mode) {
+            if (isSpinning) return;
+            
+            currentMode = mode;
+            notes = mode === 12 ? notes12 : notes17;
+            noteColors = mode === 12 ? colors12 : colors17;
+            totalNotes = notes.length;
+            segmentAngle = 360 / totalNotes;
+            
+            mode12Btn.classList.toggle('active', mode === 12);
+            mode17Btn.classList.toggle('active', mode === 17);
+            
+            currentRotation = 0;
+            resultNote.textContent = '?';
+            resultNote.classList.remove('pop');
+            status.textContent = 'Ready';
+            status.className = 'status';
+            
+            createWheel();
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            updateButtons();
+        }
+
         function initAudio() {
             if (!audioContext && audioMode.checked) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
         }
 
-        // Soft tick sound - gentle chime
         function playSoftTick() {
             if (!audioMode.checked || !audioContext) return;
-            
             const osc = audioContext.createOscillator();
             const gain = audioContext.createGain();
-            
             osc.connect(gain);
             gain.connect(audioContext.destination);
-            
-            // Soft, high bell-like tone
             osc.frequency.value = 1200 + Math.random() * 200;
             osc.type = 'sine';
-            
-            // Very gentle volume with smooth fade
             gain.gain.setValueAtTime(0, audioContext.currentTime);
-            gain.gain.linearRampToValueAtTime(0.03, audioContext.currentTime + 0.01);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
-            
+            gain.gain.linearRampToValueAtTime(0.025, audioContext.currentTime + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.12);
             osc.start(audioContext.currentTime);
-            osc.stop(audioContext.currentTime + 0.15);
+            osc.stop(audioContext.currentTime + 0.12);
         }
 
-        // Soothing win sound - gentle ascending notes
         function playSoothingWinSound(noteName) {
             if (!audioMode.checked || !audioContext) return;
-            
             const baseFreq = noteFrequencies[noteName] || 440;
-            
-            // Play a gentle arpeggio based on the selected note
-            const intervals = [1, 1.25, 1.5, 2]; // Root, major 3rd, 5th, octave
-            
+            const intervals = [1, 1.25, 1.5, 2];
             intervals.forEach((interval, i) => {
                 setTimeout(() => {
                     const osc = audioContext.createOscillator();
                     const gain = audioContext.createGain();
-                    
                     osc.connect(gain);
                     gain.connect(audioContext.destination);
-                    
                     osc.frequency.value = baseFreq * interval;
                     osc.type = 'sine';
-                    
-                    // Soft, warm envelope
                     gain.gain.setValueAtTime(0, audioContext.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.8);
-                    
+                    gain.gain.linearRampToValueAtTime(0.06, audioContext.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.7);
                     osc.start(audioContext.currentTime);
-                    osc.stop(audioContext.currentTime + 0.8);
-                }, i * 120);
+                    osc.stop(audioContext.currentTime + 0.7);
+                }, i * 100);
             });
         }
 
         function createFloatingNotes() {
+            musicNotesBg.innerHTML = '';
             const musicSymbols = ['♪', '♫', '♬', '♩', '𝄞'];
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 12; i++) {
                 const note = document.createElement('div');
                 note.className = 'floating-note';
                 note.textContent = musicSymbols[Math.floor(Math.random() * musicSymbols.length)];
                 note.style.left = Math.random() * 100 + '%';
                 note.style.animationDelay = Math.random() * 15 + 's';
                 note.style.animationDuration = (15 + Math.random() * 10) + 's';
-                note.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
+                note.style.fontSize = (1.2 + Math.random() * 1) + 'rem';
                 musicNotesBg.appendChild(note);
             }
         }
 
         function createConfetti() {
-            const colors = ['#d4af37', '#f5d67b', '#ff6b6b', '#4dabf7', '#69db7c', '#da77f2', '#ffd43b'];
-            for (let i = 0; i < 50; i++) {
+            const colors = ['#d4af37', '#f5d67b', '#d9736d', '#6a9fd9', '#6db97a', '#bf7fc9', '#d9b95c'];
+            for (let i = 0; i < 40; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + '%';
                 confetti.style.top = '-10px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                confetti.style.width = (5 + Math.random() * 10) + 'px';
-                confetti.style.height = (5 + Math.random() * 10) + 'px';
+                confetti.style.width = (4 + Math.random() * 8) + 'px';
+                confetti.style.height = (4 + Math.random() * 8) + 'px';
                 confetti.style.animationDelay = Math.random() * 0.5 + 's';
                 confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
                 confettiContainer.appendChild(confetti);
@@ -868,13 +1077,13 @@
             const rect = resultDisplay.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 6; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
                 sparkle.innerHTML = '✦';
-                sparkle.style.left = centerX + (Math.random() - 0.5) * 150 + 'px';
-                sparkle.style.top = centerY + (Math.random() - 0.5) * 100 + 'px';
-                sparkle.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+                sparkle.style.left = centerX + (Math.random() - 0.5) * 120 + 'px';
+                sparkle.style.top = centerY + (Math.random() - 0.5) * 80 + 'px';
+                sparkle.style.fontSize = (0.8 + Math.random() * 1) + 'rem';
                 sparkle.style.color = '#d4af37';
                 document.body.appendChild(sparkle);
                 setTimeout(() => sparkle.classList.add('active'), 10);
@@ -883,34 +1092,44 @@
         }
 
         function createWheel() {
-            const wheelSize = 352;
+            wheel.querySelector('svg')?.remove();
+            wheelLabels.innerHTML = '';
+            labelElements = [];
+            
+            const wheelSize = wheelWrapper.offsetWidth;
             const centerX = wheelSize / 2;
             const centerY = wheelSize / 2;
-            const radius = wheelSize / 2 - 4;
-            const labelRadius = 125;
+            const radius = wheelSize / 2 - 5;
+            
+            // Adjust label radius based on mode (12 notes need more space for text)
+            const labelRadius = currentMode === 12 ? radius * 0.65 : radius * 0.7;
+            // Adjust font size based on mode
+            const fontSize = currentMode === 12 ? 
+                (wheelSize > 350 ? '0.9rem' : '0.7rem') : 
+                (wheelSize > 350 ? '1.1rem' : '0.85rem');
 
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svg.setAttribute('width', '100%');
-            svg.setAttribute('height', '100%');
+            svg.setAttribute('width', wheelSize);
+            svg.setAttribute('height', wheelSize);
             svg.setAttribute('viewBox', `0 0 ${wheelSize} ${wheelSize}`);
-            svg.style.position = 'absolute';
-            svg.style.top = '0';
-            svg.style.left = '0';
 
             const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
             notes.forEach((note, index) => {
                 const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
-                gradient.setAttribute('id', `gradient${index}`);
+                gradient.setAttribute('id', `grad${index}`);
                 gradient.setAttribute('x1', '0%');
                 gradient.setAttribute('y1', '0%');
                 gradient.setAttribute('x2', '100%');
                 gradient.setAttribute('y2', '100%');
+                
                 const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop1.setAttribute('offset', '0%');
-                stop1.setAttribute('style', `stop-color:${noteColors[index][0]};stop-opacity:1`);
+                stop1.setAttribute('stop-color', noteColors[index][0]);
+                
                 const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop2.setAttribute('offset', '100%');
-                stop2.setAttribute('style', `stop-color:${noteColors[index][1]};stop-opacity:1`);
+                stop2.setAttribute('stop-color', noteColors[index][1]);
+                
                 gradient.appendChild(stop1);
                 gradient.appendChild(stop2);
                 defs.appendChild(gradient);
@@ -918,43 +1137,60 @@
             svg.appendChild(defs);
 
             notes.forEach((note, index) => {
-                const offsetAngle = -90 - (segmentAngle / 2);
-                const startAngle = (index * segmentAngle + offsetAngle) * (Math.PI / 180);
-                const endAngle = ((index + 1) * segmentAngle + offsetAngle) * (Math.PI / 180);
+                const startAngleDeg = index * segmentAngle - 90 - segmentAngle / 2;
+                const endAngleDeg = startAngleDeg + segmentAngle;
+                
+                const startAngle = startAngleDeg * Math.PI / 180;
+                const endAngle = endAngleDeg * Math.PI / 180;
+
                 const x1 = centerX + radius * Math.cos(startAngle);
                 const y1 = centerY + radius * Math.sin(startAngle);
                 const x2 = centerX + radius * Math.cos(endAngle);
                 const y2 = centerY + radius * Math.sin(endAngle);
+
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 const d = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
                 path.setAttribute('d', d);
-                path.setAttribute('fill', `url(#gradient${index})`);
-                path.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
+                path.setAttribute('fill', `url(#grad${index})`);
+                path.setAttribute('stroke', 'rgba(255, 255, 255, 0.15)');
                 path.setAttribute('stroke-width', '1');
                 svg.appendChild(path);
             });
-            wheel.appendChild(svg);
+
+            wheel.insertBefore(svg, wheelLabels);
 
             notes.forEach((note, index) => {
                 const label = document.createElement('div');
                 label.className = 'note-label';
                 label.textContent = note;
                 label.dataset.index = index;
-                const midAngle = (index * segmentAngle - 90) * (Math.PI / 180);
-                const x = 180 + Math.cos(midAngle) * labelRadius;
-                const y = 180 + Math.sin(midAngle) * labelRadius;
-                label.style.left = x + 'px';
-                label.style.top = y + 'px';
-                wheel.appendChild(label);
-                labelElements.push({ element: label, baseAngle: index * segmentAngle - 90 });
+                label.style.fontSize = fontSize;
+                label.style.width = currentMode === 12 ? '50px' : '36px';
+                label.style.height = currentMode === 12 ? '36px' : '36px';
+                
+                const labelAngleDeg = index * segmentAngle - 90;
+                const labelAngle = labelAngleDeg * Math.PI / 180;
+                
+                const x = centerX + Math.cos(labelAngle) * labelRadius;
+                const y = centerY + Math.sin(labelAngle) * labelRadius;
+                
+                label.style.left = `${x}px`;
+                label.style.top = `${y}px`;
+                label.style.transform = 'translate(-50%, -50%)';
+                
+                wheelLabels.appendChild(label);
+                labelElements.push({ element: label, angleDeg: labelAngleDeg });
             });
         }
 
         function getSelectedNote(rotation) {
             let normalizedRotation = rotation % 360;
             if (normalizedRotation < 0) normalizedRotation += 360;
-            const index = Math.floor(((360 - normalizedRotation + segmentAngle / 2) % 360) / segmentAngle);
-            return { note: notes[index % totalNotes], index: index % totalNotes };
+            
+            const pointerAngle = (360 - normalizedRotation) % 360;
+            const index = Math.floor((pointerAngle + segmentAngle / 2) / segmentAngle) % totalNotes;
+            
+            return { note: notes[index], index: index };
         }
 
         function highlightSegment(index) {
@@ -998,7 +1234,7 @@
             const startRotation = currentRotation;
             const startTime = performance.now();
             const duration = 4000;
-            let lastTickAngle = startRotation;
+            let lastTickSegment = Math.floor(startRotation / segmentAngle);
             
             function animateLabels(currentTime) {
                 const elapsed = currentTime - startTime;
@@ -1006,11 +1242,11 @@
                 const eased = 1 - Math.pow(1 - progress, 3);
                 const currentRot = startRotation + (totalRotation - startRotation) * eased;
                 
-                // Play soft ticks
-                if (Math.floor(currentRot / segmentAngle) !== Math.floor(lastTickAngle / segmentAngle)) {
+                const currentSegment = Math.floor(currentRot / segmentAngle);
+                if (currentSegment !== lastTickSegment) {
                     playSoftTick();
+                    lastTickSegment = currentSegment;
                 }
-                lastTickAngle = currentRot;
                 
                 labelElements.forEach(item => {
                     item.element.style.transform = `translate(-50%, -50%) rotate(${-currentRot}deg)`;
@@ -1106,6 +1342,10 @@
             playBtn.disabled = isSpinning;
             pauseBtn.disabled = !autoMode.checked || (!isSpinning && countdownTimer === null);
             stopBtn.disabled = !isSpinning && countdownTimer === null && resultNote.textContent === '?';
+            
+            // Disable mode buttons while spinning
+            mode12Btn.disabled = isSpinning;
+            mode17Btn.disabled = isSpinning;
         }
 
         function toggleDelayVisibility() {
@@ -1142,6 +1382,21 @@
             else if (value > 60) delayInput.value = 60;
         });
 
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const savedRotation = currentRotation;
+                createWheel();
+                wheel.style.transition = 'none';
+                wheel.style.transform = `rotate(${savedRotation}deg)`;
+                labelElements.forEach(item => {
+                    item.element.style.transform = `translate(-50%, -50%) rotate(${-savedRotation}deg)`;
+                });
+            }, 200);
+        });
+
+        // Initialize
         createWheel();
         createFloatingNotes();
         toggleDelayVisibility();
