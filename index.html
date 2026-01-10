@@ -24,9 +24,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             color: #fff;
-            padding: 20px 15px;
+            padding: 15px 15px 30px;
             position: relative;
             transition: background 0.4s ease, color 0.4s ease;
         }
@@ -37,9 +37,9 @@
             color: #fff;
         }
 
-        /* Light Mode */
+        /* Light Mode - Teal/White gradient */
         body.light-mode {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 50%, #d5dce3 100%);
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 30%, #e0f2f1 60%, #ffffff 100%);
             color: #2c3e50;
         }
 
@@ -63,7 +63,7 @@
         }
 
         body.dark-mode .floating-note { color: #d4af37; }
-        body.light-mode .floating-note { color: #8b7355; opacity: 0.15; }
+        body.light-mode .floating-note { color: #00897b; opacity: 0.18; }
 
         @keyframes floatUp {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
@@ -84,13 +84,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .theme-toggle {
             cursor: pointer;
-            font-size: 1.5rem;
-            padding: 8px;
+            font-size: 1.4rem;
+            padding: 6px;
             border-radius: 50%;
             transition: all 0.3s ease;
             background: transparent;
@@ -99,18 +99,14 @@
         }
 
         body.dark-mode .theme-toggle { color: #f5d67b; }
-        body.light-mode .theme-toggle { color: #5a5a5a; }
+        body.light-mode .theme-toggle { color: #00897b; }
 
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
+        .theme-toggle:hover { transform: scale(1.1); }
 
-        .logo {
-            flex: 1;
-        }
+        .logo { flex: 1; }
 
         .logo h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: 2px;
             transition: all 0.4s ease;
@@ -125,15 +121,15 @@
         }
 
         body.light-mode .logo h1 {
-            background: linear-gradient(135deg, #8b6914 0%, #b8860b 50%, #8b6914 100%);
+            background: linear-gradient(135deg, #00695c 0%, #00897b 50%, #26a69a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 10px rgba(139, 105, 20, 0.3));
+            filter: drop-shadow(0 0 10px rgba(0, 137, 123, 0.3));
         }
 
         .tagline {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             margin-bottom: 8px;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -141,19 +137,19 @@
         }
 
         body.dark-mode .tagline { color: #a0a0c0; }
-        body.light-mode .tagline { color: #666; }
+        body.light-mode .tagline { color: #00796b; }
 
         /* Mode Selector */
         .mode-selector {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .mode-btn {
-            padding: 8px 18px;
-            font-size: 0.8rem;
+            padding: 6px 16px;
+            font-size: 0.75rem;
             font-weight: 600;
             border: 2px solid;
             border-radius: 25px;
@@ -183,41 +179,49 @@
 
         body.light-mode .mode-btn {
             background: transparent;
-            border-color: #ccc;
-            color: #666;
+            border-color: #80cbc4;
+            color: #00796b;
         }
 
         body.light-mode .mode-btn:hover {
-            border-color: #8b6914;
-            color: #8b6914;
+            border-color: #00897b;
+            color: #00695c;
         }
 
         body.light-mode .mode-btn.active {
-            background: linear-gradient(145deg, #d4af37, #b8962e);
-            border-color: #b8962e;
+            background: linear-gradient(145deg, #26a69a, #00897b);
+            border-color: #00897b;
             color: #fff;
         }
 
         .mode-label {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             display: block;
             margin-top: 2px;
             opacity: 0.7;
         }
 
+        /* Main content area with wheel and dice */
+        .spin-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
         .wheel-wrapper {
             position: relative;
-            width: 420px;
-            height: 420px;
-            margin: 0 auto 25px;
+            width: 340px;
+            height: 340px;
         }
 
         .wheel-glow {
             position: absolute;
-            top: -15px;
-            left: -15px;
-            right: -15px;
-            bottom: -15px;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
             border-radius: 50%;
             animation: pulseGlow 2s ease-in-out infinite;
             transition: background 0.4s ease;
@@ -228,7 +232,7 @@
         }
 
         body.light-mode .wheel-glow {
-            background: radial-gradient(circle, transparent 60%, rgba(184, 150, 46, 0.2) 100%);
+            background: radial-gradient(circle, transparent 60%, rgba(0, 137, 123, 0.2) 100%);
         }
 
         @keyframes pulseGlow {
@@ -238,11 +242,19 @@
 
         .pointer {
             position: absolute;
-            top: -18px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+        }
+
+        body.dark-mode .pointer::before {
+            border-top-color: #d4af37;
+        }
+
+        body.light-mode .pointer::before {
+            border-top-color: #00897b;
         }
 
         .pointer::before {
@@ -250,23 +262,29 @@
             display: block;
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 42px solid #d4af37;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-top: 35px solid #d4af37;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+            transition: border-top-color 0.4s ease;
         }
 
         .pointer::after {
             content: '';
             position: absolute;
-            top: 5px;
+            top: 4px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 11px solid transparent;
-            border-right: 11px solid transparent;
-            border-top: 24px solid #f5d67b;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-top: 20px solid #f5d67b;
+            transition: border-top-color 0.4s ease;
+        }
+
+        body.light-mode .pointer::after {
+            border-top-color: #4db6ac;
         }
 
         .wheel {
@@ -274,32 +292,34 @@
             height: 100%;
             border-radius: 50%;
             position: relative;
-            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99), box-shadow 0.4s ease;
-            border: 5px solid #d4af37;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99), box-shadow 0.4s ease, border-color 0.4s ease;
+            border: 4px solid;
             overflow: visible;
         }
 
         body.dark-mode .wheel {
+            border-color: #d4af37;
             box-shadow: 
-                0 0 50px rgba(212, 175, 55, 0.35),
-                0 0 100px rgba(212, 175, 55, 0.15),
-                inset 0 0 50px rgba(0, 0, 0, 0.5);
+                0 0 40px rgba(212, 175, 55, 0.35),
+                0 0 80px rgba(212, 175, 55, 0.15),
+                inset 0 0 40px rgba(0, 0, 0, 0.5);
             background: #1a1a3a;
         }
 
         body.light-mode .wheel {
+            border-color: #00897b;
             box-shadow: 
-                0 0 40px rgba(184, 150, 46, 0.25),
-                0 0 80px rgba(184, 150, 46, 0.1),
-                inset 0 0 30px rgba(0, 0, 0, 0.1);
-            background: #f0f0f0;
+                0 0 30px rgba(0, 137, 123, 0.25),
+                0 0 60px rgba(0, 137, 123, 0.1),
+                inset 0 0 25px rgba(0, 0, 0, 0.08);
+            background: #e0f2f1;
         }
 
         .wheel.spinning {
             box-shadow: 
-                0 0 70px rgba(212, 175, 55, 0.5),
-                0 0 120px rgba(212, 175, 55, 0.25),
-                inset 0 0 50px rgba(0, 0, 0, 0.5);
+                0 0 60px rgba(212, 175, 55, 0.5),
+                0 0 100px rgba(212, 175, 55, 0.25),
+                inset 0 0 40px rgba(0, 0, 0, 0.5);
         }
 
         .wheel svg {
@@ -328,20 +348,10 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-        }
-
-        body.dark-mode .note-label {
             color: #fff;
             text-shadow: 
                 1px 1px 3px rgba(0, 0, 0, 0.9),
                 0 0 10px rgba(0, 0, 0, 0.6);
-        }
-
-        body.light-mode .note-label {
-            color: #fff;
-            text-shadow: 
-                1px 1px 3px rgba(0, 0, 0, 0.7),
-                0 0 8px rgba(0, 0, 0, 0.4);
         }
 
         .note-label.highlight {
@@ -356,32 +366,33 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(145deg, #f5d67b, #d4af37, #b8962e);
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             z-index: 10;
-            box-shadow: 
-                0 0 30px rgba(212, 175, 55, 0.7),
-                inset 0 -5px 15px rgba(0, 0, 0, 0.3),
-                inset 0 5px 15px rgba(255, 255, 255, 0.3);
             animation: centerPulse 2s ease-in-out infinite;
+            transition: background 0.4s ease;
+        }
+
+        body.dark-mode .center-circle {
+            background: linear-gradient(145deg, #f5d67b, #d4af37, #b8962e);
+            box-shadow: 
+                0 0 25px rgba(212, 175, 55, 0.7),
+                inset 0 -4px 12px rgba(0, 0, 0, 0.3),
+                inset 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        body.light-mode .center-circle {
+            background: linear-gradient(145deg, #4db6ac, #00897b, #00695c);
+            box-shadow: 
+                0 0 25px rgba(0, 137, 123, 0.6),
+                inset 0 -4px 12px rgba(0, 0, 0, 0.2),
+                inset 0 4px 12px rgba(255, 255, 255, 0.4);
         }
 
         @keyframes centerPulse {
-            0%, 100% {
-                box-shadow: 
-                    0 0 30px rgba(212, 175, 55, 0.7),
-                    inset 0 -5px 15px rgba(0, 0, 0, 0.3),
-                    inset 0 5px 15px rgba(255, 255, 255, 0.3);
-            }
-            50% {
-                box-shadow: 
-                    0 0 50px rgba(212, 175, 55, 0.9),
-                    0 0 70px rgba(212, 175, 55, 0.4),
-                    inset 0 -5px 15px rgba(0, 0, 0, 0.3),
-                    inset 0 5px 15px rgba(255, 255, 255, 0.3);
-            }
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
         }
 
         .center-circle::after {
@@ -390,19 +401,102 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.6rem;
-            color: #1a1a3a;
+            font-size: 1.3rem;
+            transition: color 0.4s ease;
         }
 
+        body.dark-mode .center-circle::after { color: #1a1a3a; }
+        body.light-mode .center-circle::after { color: #fff; }
+
+        /* Dice */
+        .dice-container {
+            perspective: 600px;
+            width: 80px;
+            height: 80px;
+        }
+
+        .dice {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backface-visibility: hidden;
+            border: 3px solid;
+            transition: all 0.4s ease;
+        }
+
+        body.dark-mode .dice-face.major {
+            background: linear-gradient(145deg, #4ade80, #22c55e);
+            border-color: #16a34a;
+            color: #052e16;
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.3), inset 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode .dice-face.minor {
+            background: linear-gradient(145deg, #f87171, #ef4444);
+            border-color: #dc2626;
+            color: #450a0a;
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.3), inset 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        body.light-mode .dice-face.major {
+            background: linear-gradient(145deg, #a7f3d0, #6ee7b7);
+            border-color: #34d399;
+            color: #064e3b;
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.5), inset 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        body.light-mode .dice-face.minor {
+            background: linear-gradient(145deg, #fecaca, #fca5a5);
+            border-color: #f87171;
+            color: #7f1d1d;
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.5), inset 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Dice faces positioning */
+        .dice-face:nth-child(1) { transform: rotateY(0deg) translateZ(40px); }
+        .dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(40px); }
+        .dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(40px); }
+        .dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(40px); }
+        .dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(40px); }
+        .dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(40px); }
+
+        .dice-label {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.4s ease;
+        }
+
+        body.dark-mode .dice-label { color: #a0a0c0; }
+        body.light-mode .dice-label { color: #00796b; }
+
         .result-display {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             position: relative;
         }
 
         .result-note {
-            font-size: 4.5rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            min-height: 90px;
+            min-height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -414,16 +508,31 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.5));
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
         }
 
         body.light-mode .result-note {
-            background: linear-gradient(135deg, #8b6914 0%, #b8860b 50%, #8b6914 100%);
+            background: linear-gradient(135deg, #00695c 0%, #00897b 50%, #26a69a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 15px rgba(139, 105, 20, 0.4));
+            filter: drop-shadow(0 0 12px rgba(0, 137, 123, 0.4));
         }
+
+        .result-quality {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: color 0.4s ease;
+        }
+
+        .result-quality.major { color: #22c55e; }
+        .result-quality.minor { color: #ef4444; }
+
+        body.light-mode .result-quality.major { color: #059669; }
+        body.light-mode .result-quality.minor { color: #dc2626; }
 
         .result-note.pop {
             animation: popIn 0.6s ease forwards;
@@ -437,14 +546,14 @@
         }
 
         .countdown {
-            font-size: 1rem;
-            height: 24px;
-            margin-top: 6px;
+            font-size: 0.9rem;
+            height: 22px;
+            margin-top: 8px;
             transition: color 0.3s ease;
         }
 
         body.dark-mode .countdown { color: #a0a0c0; }
-        body.light-mode .countdown { color: #666; }
+        body.light-mode .countdown { color: #00796b; }
 
         .countdown.pulse {
             animation: countdownPulse 1s ease-in-out infinite;
@@ -452,19 +561,19 @@
 
         @keyframes countdownPulse {
             0%, 100% { opacity: 1; }
-            50% { color: #d4af37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+            50% { opacity: 0.5; }
         }
 
         .controls {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 14px 30px;
-            font-size: 1rem;
+            padding: 12px 26px;
+            font-size: 0.9rem;
             font-weight: 700;
             border: none;
             border-radius: 50px;
@@ -475,7 +584,7 @@
             letter-spacing: 1.5px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             position: relative;
             overflow: hidden;
         }
@@ -496,34 +605,40 @@
         .btn-play {
             background: linear-gradient(145deg, #34ce57, #28a745, #1e7e34);
             color: #fff;
-            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
         }
 
         .btn-play:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 28px rgba(40, 167, 69, 0.5);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 22px rgba(40, 167, 69, 0.5);
         }
 
         .btn-pause {
             background: linear-gradient(145deg, #f5d67b, #d4af37, #b8962e);
             color: #1a1a2e;
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        body.light-mode .btn-pause {
+            background: linear-gradient(145deg, #4db6ac, #00897b, #00695c);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4);
         }
 
         .btn-pause:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 28px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 22px rgba(212, 175, 55, 0.5);
         }
 
         .btn-stop {
             background: linear-gradient(145deg, #e4606d, #dc3545, #bd2130);
             color: #fff;
-            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.4);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
         }
 
         .btn-stop:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 28px rgba(220, 53, 69, 0.5);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 22px rgba(220, 53, 69, 0.5);
         }
 
         .btn:disabled {
@@ -536,23 +651,23 @@
         .btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
 
         .settings-row {
-            margin-top: 20px;
+            margin-top: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 25px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
         .setting-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .setting-item > label,
         .setting-item > span {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             letter-spacing: 1px;
             transition: color 0.4s ease;
         }
@@ -561,12 +676,12 @@
         body.dark-mode .setting-item > span { color: #a0a0c0; }
 
         body.light-mode .setting-item > label,
-        body.light-mode .setting-item > span { color: #666; }
+        body.light-mode .setting-item > span { color: #00796b; }
 
         .switch {
             position: relative;
-            width: 50px;
-            height: 26px;
+            width: 44px;
+            height: 24px;
         }
 
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -576,43 +691,48 @@
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             transition: 0.4s;
-            border-radius: 26px;
+            border-radius: 24px;
         }
 
         body.dark-mode .slider {
             background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         body.light-mode .slider {
-            background: linear-gradient(145deg, #ccc, #aaa);
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(145deg, #b2dfdb, #80cbc4);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
+            height: 18px;
+            width: 18px;
             left: 3px;
             bottom: 3px;
             background: linear-gradient(145deg, #fff, #e0e0e0);
             transition: 0.4s;
             border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
-        input:checked + .slider {
+        body.dark-mode input:checked + .slider {
             background: linear-gradient(145deg, #d4af37, #b8962e);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
         }
 
-        input:checked + .slider:before { transform: translateX(24px); }
+        body.light-mode input:checked + .slider {
+            background: linear-gradient(145deg, #26a69a, #00897b);
+            box-shadow: 0 0 12px rgba(0, 137, 123, 0.4);
+        }
+
+        input:checked + .slider:before { transform: translateX(20px); }
 
         .delay-setting {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -626,23 +746,22 @@
         }
 
         .delay-setting label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             letter-spacing: 1px;
         }
 
         body.dark-mode .delay-setting label { color: #a0a0c0; }
-        body.light-mode .delay-setting label { color: #666; }
+        body.light-mode .delay-setting label { color: #00796b; }
 
         .delay-input {
-            width: 60px;
-            padding: 6px 10px;
-            font-size: 0.95rem;
+            width: 55px;
+            padding: 5px 8px;
+            font-size: 0.85rem;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             text-align: center;
             border: 2px solid;
             border-radius: 8px;
-            color: #d4af37;
             outline: none;
             transition: all 0.3s ease;
         }
@@ -650,44 +769,51 @@
         body.dark-mode .delay-input {
             background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
             border-color: #3a3a5a;
+            color: #d4af37;
         }
 
         body.light-mode .delay-input {
             background: #fff;
-            border-color: #ccc;
-            color: #8b6914;
+            border-color: #80cbc4;
+            color: #00695c;
         }
 
         .delay-input:focus {
             border-color: #d4af37;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+        }
+
+        body.light-mode .delay-input:focus {
+            border-color: #00897b;
+            box-shadow: 0 0 12px rgba(0, 137, 123, 0.3);
         }
 
         .delay-unit {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
 
         body.dark-mode .delay-unit { color: #a0a0c0; }
-        body.light-mode .delay-unit { color: #666; }
+        body.light-mode .delay-unit { color: #00796b; }
 
-        .audio-icon { font-size: 1.1rem; }
+        .audio-icon { font-size: 1rem; }
 
         .status {
-            margin-top: 15px;
-            font-size: 0.9rem;
+            margin-top: 12px;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 3px;
             transition: all 0.3s ease;
         }
 
         body.dark-mode .status { color: #666; }
-        body.light-mode .status { color: #999; }
+        body.light-mode .status { color: #80cbc4; }
 
         .status.spinning {
-            color: #d4af37;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
             animation: statusPulse 0.5s ease-in-out infinite;
         }
+
+        body.dark-mode .status.spinning { color: #d4af37; text-shadow: 0 0 12px rgba(212, 175, 55, 0.5); }
+        body.light-mode .status.spinning { color: #00897b; text-shadow: 0 0 12px rgba(0, 137, 123, 0.5); }
 
         @keyframes statusPulse {
             0%, 100% { opacity: 1; }
@@ -697,21 +823,23 @@
         .status.stopped { color: #dc3545; }
 
         footer {
-            margin-top: 30px;
-            font-size: 0.8rem;
+            margin-top: 20px;
+            font-size: 0.7rem;
             transition: color 0.4s ease;
         }
 
         body.dark-mode footer { color: #555; }
-        body.light-mode footer { color: #999; }
+        body.light-mode footer { color: #80cbc4; }
 
         footer a {
-            color: #d4af37;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
-        footer a:hover { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        body.dark-mode footer a { color: #d4af37; }
+        body.light-mode footer a { color: #00897b; }
+
+        footer a:hover { opacity: 0.8; }
 
         .confetti-container {
             position: fixed;
@@ -750,57 +878,80 @@
             100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
         }
 
-        /* Tablet */
-        @media (max-width: 768px) {
-            .wheel-wrapper { width: 380px; height: 380px; }
-            .result-note { font-size: 4rem; }
-            .logo h1 { font-size: 1.8rem; }
-        }
-
-        /* Mobile */
-        @media (max-width: 480px) {
-            body {
-                padding: 15px 10px;
-                justify-content: flex-start;
-                padding-top: 15px;
+        /* Responsive */
+        @media (max-width: 600px) {
+            .spin-area {
+                flex-direction: column;
+                gap: 15px;
             }
 
-            .header-row { margin-bottom: 3px; }
-            .logo h1 { font-size: 1.4rem; }
-            .tagline { font-size: 0.65rem; margin-bottom: 6px; }
-            .theme-toggle { font-size: 1.2rem; padding: 5px; }
+            .dice-container {
+                width: 70px;
+                height: 70px;
+            }
 
-            .mode-selector { gap: 8px; margin-bottom: 15px; }
-            .mode-btn { padding: 6px 14px; font-size: 0.7rem; }
-            .mode-label { font-size: 0.6rem; }
+            .dice-face {
+                width: 70px;
+                height: 70px;
+                font-size: 0.75rem;
+            }
 
-            .wheel-wrapper { width: 300px; height: 300px; margin-bottom: 18px; }
-            .center-circle { width: 50px; height: 50px; }
-            .center-circle::after { font-size: 1.2rem; }
-
-            .result-note { font-size: 3rem; min-height: 65px; }
-            .countdown { font-size: 0.8rem; }
-
-            .controls { gap: 10px; }
-            .btn { padding: 10px 18px; font-size: 0.8rem; }
-
-            .settings-row { gap: 12px; margin-top: 12px; }
-            .setting-item > label, .setting-item > span { font-size: 0.75rem; }
-            .switch { width: 42px; height: 22px; }
-            .slider:before { height: 16px; width: 16px; }
-            input:checked + .slider:before { transform: translateX(20px); }
-            .delay-input { width: 50px; padding: 4px 6px; font-size: 0.8rem; }
-
-            .status { font-size: 0.7rem; margin-top: 10px; }
-            footer { margin-top: 15px; font-size: 0.65rem; }
+            .dice-face:nth-child(1) { transform: rotateY(0deg) translateZ(35px); }
+            .dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(35px); }
+            .dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(35px); }
+            .dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(35px); }
+            .dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(35px); }
+            .dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(35px); }
         }
 
-        /* Small mobile */
+        @media (max-width: 480px) {
+            body { padding: 10px 10px 25px; }
+
+            .header-row { margin-bottom: 2px; }
+            .logo h1 { font-size: 1.4rem; }
+            .tagline { font-size: 0.6rem; margin-bottom: 5px; }
+            .theme-toggle { font-size: 1.1rem; padding: 4px; }
+
+            .mode-selector { gap: 6px; margin-bottom: 10px; }
+            .mode-btn { padding: 5px 12px; font-size: 0.65rem; }
+            .mode-label { font-size: 0.55rem; }
+
+            .wheel-wrapper { width: 280px; height: 280px; }
+            .center-circle { width: 45px; height: 45px; }
+            .center-circle::after { font-size: 1rem; }
+
+            .dice-container { width: 60px; height: 60px; }
+            .dice-face { width: 60px; height: 60px; font-size: 0.65rem; }
+            .dice-face:nth-child(1) { transform: rotateY(0deg) translateZ(30px); }
+            .dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(30px); }
+            .dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(30px); }
+            .dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(30px); }
+            .dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(30px); }
+            .dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(30px); }
+
+            .result-note { font-size: 2.8rem; min-height: 55px; }
+            .result-quality { font-size: 1rem; }
+            .countdown { font-size: 0.75rem; }
+
+            .controls { gap: 8px; }
+            .btn { padding: 10px 18px; font-size: 0.75rem; }
+
+            .settings-row { gap: 12px; margin-top: 12px; }
+            .setting-item > label, .setting-item > span { font-size: 0.7rem; }
+            .switch { width: 40px; height: 22px; }
+            .slider:before { height: 16px; width: 16px; }
+            input:checked + .slider:before { transform: translateX(18px); }
+            .delay-input { width: 48px; padding: 4px 6px; font-size: 0.75rem; }
+
+            .status { font-size: 0.65rem; margin-top: 10px; }
+            footer { margin-top: 15px; font-size: 0.6rem; }
+        }
+
         @media (max-width: 360px) {
-            .wheel-wrapper { width: 260px; height: 260px; }
-            .result-note { font-size: 2.5rem; }
-            .btn { padding: 8px 14px; font-size: 0.75rem; }
-            .mode-btn { padding: 5px 10px; font-size: 0.65rem; }
+            .wheel-wrapper { width: 240px; height: 240px; }
+            .result-note { font-size: 2.2rem; }
+            .btn { padding: 8px 14px; font-size: 0.7rem; }
+            .mode-btn { padding: 4px 10px; font-size: 0.6rem; }
         }
     </style>
 </head>
@@ -814,7 +965,7 @@
             <div class="logo">
                 <h1>♪ Musicians' Den</h1>
             </div>
-            <div style="width: 40px;"></div>
+            <div style="width: 36px;"></div>
         </div>
         <p class="tagline">Your Dream Our Passion</p>
 
@@ -829,17 +980,34 @@
             </button>
         </div>
 
-        <div class="wheel-wrapper" id="wheelWrapper">
-            <div class="wheel-glow"></div>
-            <div class="pointer"></div>
-            <div class="wheel" id="wheel">
-                <div class="wheel-labels" id="wheelLabels"></div>
+        <div class="spin-area">
+            <div class="wheel-wrapper" id="wheelWrapper">
+                <div class="wheel-glow"></div>
+                <div class="pointer"></div>
+                <div class="wheel" id="wheel">
+                    <div class="wheel-labels" id="wheelLabels"></div>
+                </div>
+                <div class="center-circle"></div>
             </div>
-            <div class="center-circle"></div>
+
+            <div class="dice-section">
+                <div class="dice-container">
+                    <div class="dice" id="dice">
+                        <div class="dice-face major">Major</div>
+                        <div class="dice-face minor">Minor</div>
+                        <div class="dice-face major">Major</div>
+                        <div class="dice-face minor">Minor</div>
+                        <div class="dice-face major">Major</div>
+                        <div class="dice-face minor">Minor</div>
+                    </div>
+                </div>
+                <div class="dice-label">Quality</div>
+            </div>
         </div>
 
         <div class="result-display" id="resultDisplay">
             <div class="result-note" id="resultNote">?</div>
+            <div class="result-quality" id="resultQuality"></div>
             <div class="countdown" id="countdown"></div>
         </div>
 
@@ -876,7 +1044,7 @@
         <div class="status" id="status">Ready</div>
 
         <footer>
-            <p>© 2026 <a href="https://musiciansdenindia.com" target="_blank">Musicians' Den</a> | Note Practice Tool</p>
+            <p>© 2026 <a href="https://musiciansdenindia.com" target="_blank">Musicians' Den</a> | Chord Practice Tool</p>
         </footer>
     </div>
 
@@ -890,23 +1058,13 @@
             'C', 'C#', 'D♭', 'D', 'D#', 'E♭', 'E', 'F', 'F#', 'G♭', 'G', 'G#', 'A♭', 'A', 'A#', 'B♭', 'B'
         ];
 
-        // Colors for 12 notes
         const colors12 = [
-            ['#d9736d', '#c9635d'], // C
-            ['#d9956a', '#c9855a'], // C#/Db
-            ['#d9b95c', '#c9a94c'], // D
-            ['#c9d96e', '#b9c95e'], // D#/Eb
-            ['#6db97a', '#5da96a'], // E
-            ['#5cb9a8', '#4ca998'], // F
-            ['#5cafd9', '#4c9fc9'], // F#/Gb
-            ['#6a8fd9', '#5a7fc9'], // G
-            ['#8a7fd9', '#7a6fc9'], // G#/Ab
-            ['#b07fd9', '#a06fc9'], // A
-            ['#d97faf', '#c96f9f'], // A#/Bb
-            ['#d9736d', '#c9635d'], // B
+            ['#d9736d', '#c9635d'], ['#d9956a', '#c9855a'], ['#d9b95c', '#c9a94c'],
+            ['#c9d96e', '#b9c95e'], ['#6db97a', '#5da96a'], ['#5cb9a8', '#4ca998'],
+            ['#5cafd9', '#4c9fc9'], ['#6a8fd9', '#5a7fc9'], ['#8a7fd9', '#7a6fc9'],
+            ['#b07fd9', '#a06fc9'], ['#d97faf', '#c96f9f'], ['#d9736d', '#c9635d']
         ];
 
-        // Colors for 17 notes
         const colors17 = [
             ['#d9736d', '#c9635d'], ['#d9896a', '#c97a5a'], ['#d9a066', '#c99156'],
             ['#d9b95c', '#c9a94c'], ['#d9cb6e', '#c9bb5e'], ['#a8c96e', '#98b95e'],
@@ -917,11 +1075,11 @@
         ];
 
         const noteFrequencies = {
-            'C': 261.63, 'C#': 277.18, 'C#/D♭': 277.18, 'D♭': 277.18, 'Db': 277.18,
-            'D': 293.66, 'D#': 311.13, 'D#/E♭': 311.13, 'E♭': 311.13, 'Eb': 311.13,
-            'E': 329.63, 'F': 349.23, 'F#': 369.99, 'F#/G♭': 369.99, 'G♭': 369.99, 'Gb': 369.99,
-            'G': 392.00, 'G#': 415.30, 'G#/A♭': 415.30, 'A♭': 415.30, 'Ab': 415.30,
-            'A': 440.00, 'A#': 466.16, 'A#/B♭': 466.16, 'B♭': 466.16, 'Bb': 466.16, 'B': 493.88
+            'C': 261.63, 'C#': 277.18, 'C#/D♭': 277.18, 'D♭': 277.18,
+            'D': 293.66, 'D#': 311.13, 'D#/E♭': 311.13, 'E♭': 311.13,
+            'E': 329.63, 'F': 349.23, 'F#': 369.99, 'F#/G♭': 369.99, 'G♭': 369.99,
+            'G': 392.00, 'G#': 415.30, 'G#/A♭': 415.30, 'A♭': 415.30,
+            'A': 440.00, 'A#': 466.16, 'A#/B♭': 466.16, 'B♭': 466.16, 'B': 493.88
         };
 
         // State
@@ -929,11 +1087,14 @@
         let notes = notes12;
         let noteColors = colors12;
         let isDarkMode = true;
+        let currentQuality = '';
 
         const wheel = document.getElementById('wheel');
         const wheelWrapper = document.getElementById('wheelWrapper');
         const wheelLabels = document.getElementById('wheelLabels');
+        const dice = document.getElementById('dice');
         const resultNote = document.getElementById('resultNote');
+        const resultQuality = document.getElementById('resultQuality');
         const resultDisplay = document.getElementById('resultDisplay');
         const countdown = document.getElementById('countdown');
         const playBtn = document.getElementById('playBtn');
@@ -960,6 +1121,37 @@
 
         let totalNotes = notes.length;
         let segmentAngle = 360 / totalNotes;
+
+        // Dice rotation states for Major/Minor
+        const diceRotations = {
+            major: [
+                { x: 0, y: 0 },      // Front - Major
+                { x: 0, y: 180 },    // Back - Minor (but we want Major)
+                { x: 0, y: -90 },    // Left - Major
+                { x: 0, y: 90 },     // Right - Minor (but we want Major)
+                { x: -90, y: 0 },    // Top - Major
+                { x: 90, y: 0 }      // Bottom - Minor (but we want Major)
+            ],
+            minor: [
+                { x: 0, y: 180 },    // Back - Minor
+                { x: 0, y: 90 },     // Right - Minor
+                { x: 90, y: 0 }      // Bottom - Minor
+            ]
+        };
+
+        // Get final rotation that shows Major
+        const majorFinalRotations = [
+            { x: 0, y: 0 },
+            { x: 0, y: -90 },
+            { x: -90, y: 0 }
+        ];
+
+        // Get final rotation that shows Minor
+        const minorFinalRotations = [
+            { x: 0, y: 180 },
+            { x: 0, y: 90 },
+            { x: 90, y: 0 }
+        ];
 
         // Theme toggle
         themeToggle.addEventListener('click', () => {
@@ -988,12 +1180,16 @@
             currentRotation = 0;
             resultNote.textContent = '?';
             resultNote.classList.remove('pop');
+            resultQuality.textContent = '';
+            resultQuality.className = 'result-quality';
             status.textContent = 'Ready';
             status.className = 'status';
             
             createWheel();
             wheel.style.transition = 'none';
             wheel.style.transform = 'rotate(0deg)';
+            dice.style.transition = 'none';
+            dice.style.transform = 'rotateX(0deg) rotateY(0deg)';
             updateButtons();
         }
 
@@ -1012,16 +1208,18 @@
             osc.frequency.value = 1200 + Math.random() * 200;
             osc.type = 'sine';
             gain.gain.setValueAtTime(0, audioContext.currentTime);
-            gain.gain.linearRampToValueAtTime(0.025, audioContext.currentTime + 0.01);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.12);
+            gain.gain.linearRampToValueAtTime(0.02, audioContext.currentTime + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
             osc.start(audioContext.currentTime);
-            osc.stop(audioContext.currentTime + 0.12);
+            osc.stop(audioContext.currentTime + 0.1);
         }
 
-        function playSoothingWinSound(noteName) {
+        function playSoothingWinSound(noteName, isMinor) {
             if (!audioMode.checked || !audioContext) return;
             const baseFreq = noteFrequencies[noteName] || 440;
-            const intervals = [1, 1.25, 1.5, 2];
+            // Major: 1, 1.25 (major 3rd), 1.5 (5th)
+            // Minor: 1, 1.2 (minor 3rd), 1.5 (5th)
+            const intervals = isMinor ? [1, 1.2, 1.5, 2] : [1, 1.25, 1.5, 2];
             intervals.forEach((interval, i) => {
                 setTimeout(() => {
                     const osc = audioContext.createOscillator();
@@ -1031,10 +1229,10 @@
                     osc.frequency.value = baseFreq * interval;
                     osc.type = 'sine';
                     gain.gain.setValueAtTime(0, audioContext.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.06, audioContext.currentTime + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.7);
+                    gain.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.6);
                     osc.start(audioContext.currentTime);
-                    osc.stop(audioContext.currentTime + 0.7);
+                    osc.stop(audioContext.currentTime + 0.6);
                 }, i * 100);
             });
         }
@@ -1042,7 +1240,7 @@
         function createFloatingNotes() {
             musicNotesBg.innerHTML = '';
             const musicSymbols = ['♪', '♫', '♬', '♩', '𝄞'];
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 10; i++) {
                 const note = document.createElement('div');
                 note.className = 'floating-note';
                 note.textContent = musicSymbols[Math.floor(Math.random() * musicSymbols.length)];
@@ -1055,16 +1253,18 @@
         }
 
         function createConfetti() {
-            const colors = ['#d4af37', '#f5d67b', '#d9736d', '#6a9fd9', '#6db97a', '#bf7fc9', '#d9b95c'];
-            for (let i = 0; i < 40; i++) {
+            const colors = isDarkMode 
+                ? ['#d4af37', '#f5d67b', '#d9736d', '#6a9fd9', '#6db97a', '#bf7fc9', '#d9b95c']
+                : ['#00897b', '#4db6ac', '#26a69a', '#80cbc4', '#a7f3d0', '#6ee7b7'];
+            for (let i = 0; i < 35; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + '%';
                 confetti.style.top = '-10px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                confetti.style.width = (4 + Math.random() * 8) + 'px';
-                confetti.style.height = (4 + Math.random() * 8) + 'px';
+                confetti.style.width = (4 + Math.random() * 7) + 'px';
+                confetti.style.height = (4 + Math.random() * 7) + 'px';
                 confetti.style.animationDelay = Math.random() * 0.5 + 's';
                 confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
                 confettiContainer.appendChild(confetti);
@@ -1077,14 +1277,14 @@
             const rect = resultDisplay.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 5; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
                 sparkle.innerHTML = '✦';
-                sparkle.style.left = centerX + (Math.random() - 0.5) * 120 + 'px';
-                sparkle.style.top = centerY + (Math.random() - 0.5) * 80 + 'px';
-                sparkle.style.fontSize = (0.8 + Math.random() * 1) + 'rem';
-                sparkle.style.color = '#d4af37';
+                sparkle.style.left = centerX + (Math.random() - 0.5) * 100 + 'px';
+                sparkle.style.top = centerY + (Math.random() - 0.5) * 60 + 'px';
+                sparkle.style.fontSize = (0.7 + Math.random() * 0.8) + 'rem';
+                sparkle.style.color = isDarkMode ? '#d4af37' : '#00897b';
                 document.body.appendChild(sparkle);
                 setTimeout(() => sparkle.classList.add('active'), 10);
                 setTimeout(() => sparkle.remove(), 1000);
@@ -1099,14 +1299,12 @@
             const wheelSize = wheelWrapper.offsetWidth;
             const centerX = wheelSize / 2;
             const centerY = wheelSize / 2;
-            const radius = wheelSize / 2 - 5;
+            const radius = wheelSize / 2 - 4;
             
-            // Adjust label radius based on mode (12 notes need more space for text)
             const labelRadius = currentMode === 12 ? radius * 0.65 : radius * 0.7;
-            // Adjust font size based on mode
             const fontSize = currentMode === 12 ? 
-                (wheelSize > 350 ? '0.9rem' : '0.7rem') : 
-                (wheelSize > 350 ? '1.1rem' : '0.85rem');
+                (wheelSize > 300 ? '0.8rem' : '0.65rem') : 
+                (wheelSize > 300 ? '1rem' : '0.8rem');
 
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('width', wheelSize);
@@ -1165,8 +1363,8 @@
                 label.textContent = note;
                 label.dataset.index = index;
                 label.style.fontSize = fontSize;
-                label.style.width = currentMode === 12 ? '50px' : '36px';
-                label.style.height = currentMode === 12 ? '36px' : '36px';
+                label.style.width = currentMode === 12 ? '45px' : '32px';
+                label.style.height = '32px';
                 
                 const labelAngleDeg = index * segmentAngle - 90;
                 const labelAngle = labelAngleDeg * Math.PI / 180;
@@ -1222,14 +1420,30 @@
             countdown.classList.remove('pulse');
             resultNote.classList.remove('pop');
             resultNote.textContent = '?';
+            resultQuality.textContent = '';
+            resultQuality.className = 'result-quality';
             document.querySelectorAll('.note-label').forEach(label => label.classList.remove('highlight'));
 
+            // Wheel spin
             const randomSpins = Math.floor(Math.random() * 4) + 5;
             const randomAngle = Math.floor(Math.random() * 360);
             const totalRotation = currentRotation + (randomSpins * 360) + randomAngle;
             
             wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
             wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            // Dice spin - random Major or Minor
+            const isMajor = Math.random() > 0.5;
+            currentQuality = isMajor ? 'Major' : 'Minor';
+            const finalRotations = isMajor ? majorFinalRotations : minorFinalRotations;
+            const finalRot = finalRotations[Math.floor(Math.random() * finalRotations.length)];
+            
+            // Add multiple full rotations for effect
+            const diceSpinsX = (Math.floor(Math.random() * 3) + 3) * 360;
+            const diceSpinsY = (Math.floor(Math.random() * 3) + 3) * 360;
+            
+            dice.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+            dice.style.transform = `rotateX(${diceSpinsX + finalRot.x}deg) rotateY(${diceSpinsY + finalRot.y}deg)`;
             
             const startRotation = currentRotation;
             const startTime = performance.now();
@@ -1265,20 +1479,24 @@
                 });
                 const result = getSelectedNote(currentRotation);
                 highlightSegment(result.index);
-                showResult(result.note);
+                showResult(result.note, currentQuality);
             }, 4000);
         }
 
-        function showResult(note) {
+        function showResult(note, quality) {
             isSpinning = false;
             resultNote.textContent = note;
             resultNote.classList.add('pop');
-            status.textContent = 'Note Selected';
+            
+            resultQuality.textContent = quality;
+            resultQuality.className = 'result-quality ' + quality.toLowerCase();
+            
+            status.textContent = 'Chord Selected';
             status.className = 'status';
             
             createConfetti();
             createSparkles();
-            playSoothingWinSound(note);
+            playSoothingWinSound(note, quality === 'Minor');
             
             updateButtons();
             if (autoMode.checked && !isPaused) startCountdown();
@@ -1327,6 +1545,8 @@
             countdown.classList.remove('pulse');
             resultNote.textContent = '?';
             resultNote.classList.remove('pop');
+            resultQuality.textContent = '';
+            resultQuality.className = 'result-quality';
             document.querySelectorAll('.note-label').forEach(label => label.classList.remove('highlight'));
             updateButtons();
         }
@@ -1342,8 +1562,6 @@
             playBtn.disabled = isSpinning;
             pauseBtn.disabled = !autoMode.checked || (!isSpinning && countdownTimer === null);
             stopBtn.disabled = !isSpinning && countdownTimer === null && resultNote.textContent === '?';
-            
-            // Disable mode buttons while spinning
             mode12Btn.disabled = isSpinning;
             mode17Btn.disabled = isSpinning;
         }
