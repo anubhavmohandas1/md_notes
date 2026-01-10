@@ -9,16 +9,28 @@ A visually stunning, interactive musical note practice tool designed for **Music
 ## Features
 
 ### 🎡 Spinning Wheel
-- 12 musical notes: C, C#/D♭, D, D#/E♭, E, F, F#/G♭, G, G#/A♭, A, A#/B♭, and B
+- **12 Notes Mode (Basic):** C, C#/D♭, D, D#/E♭, E, F, F#/G♭, G, G#/A♭, A, A#/B♭, B
+- **17 Notes Mode (Intermediate):** All sharps and flats displayed separately
 - Rainbow gradient colors for each note
 - Smooth 4-second spin animation with easing
 - Counter-rotating labels (always readable)
-- Glowing gold border with pulse animation
+- Glowing border with pulse animation
+
+### 🎲 Major/Minor Dice
+- 3D rotating dice alongside the wheel
+- Randomly selects Major or Minor chord quality
+- Spins simultaneously with the wheel
+
+### 🌗 Theme Toggle
+- Dark mode (default) - Purple gradient
+- Light mode - Teal/white gradient
+- Toggle with 🌙/☀️ button
 
 ### 🎮 Controls
+
 | Button | Function |
 |--------|----------|
-| ▶ Play | Spin the wheel |
+| ▶ Play | Spin the wheel and dice |
 | ‖ Pause | Pause auto-roll countdown |
 | ■ Stop | Stop and reset |
 
@@ -32,102 +44,50 @@ A visually stunning, interactive musical note practice tool designed for **Music
 
 ### 🎨 Visual Effects
 - Floating music notes background (♪ ♫ ♬)
-- Confetti explosion on win
+- Confetti explosion on result
 - Sparkle effects around result
 - Pulsing center circle
 - Highlighted winning segment
-- Gradient buttons with hover effects
 
 ### 🔊 Audio (Optional)
 - **Tick sounds:** Soft chimes while spinning
-- **Win sound:** Gentle arpeggio in the selected note's frequency
-- Musical and soothing - appropriate for instrument practice
+- **Win sound:** Arpeggio in Major or Minor based on dice result
 
 ---
-
 
 ## Usage Guide
 
 ### For Students
 1. Open the Note Spinner page
-2. Click **Play** to spin
-3. Practice the note shown on your instrument
-4. With **Auto Roll ON**, it will automatically show new notes
+2. Select **12 Notes** (Basic) or **17 Notes** (Intermediate)
+3. Click **Play** to spin
+4. Practice the chord shown (e.g., "F Minor")
+5. With **Auto Roll ON**, new chords appear automatically
 
 ### For Teachers
-- Set **Delay** to give students time to find/play the note
-- Use in class for random note recognition exercises
-- Works on mobile devices for individual practice
+- Set **Delay** to give students practice time
+- Use 12 Notes for beginners, 17 Notes for intermediate
+- Works on mobile for individual practice
 
 ---
 
-## Customization
+## Example
 
-### Change Colors
-Edit `noteColors` array in JavaScript:
-```javascript
-const noteColors = [
-    ['#ff6b6b', '#ee5a5a'], // C - gradient start, end
-    // ... more colors
-];
-```
-
-### Change Spin Duration
-Edit wheel CSS transition:
-```css
-.wheel {
-    transition: transform 4s cubic-bezier(...); /* Change 4s */
-}
-```
-Also update `duration` variable in `spin()` function.
-
-### Change Notes
-Edit `notes` array:
-```javascript
-const notes = ['C', 'C#', 'Db', ...];
-```
-
-### Add/Remove Effects
-- Confetti: Remove `createConfetti()` call in `showResult()`
-- Sparkles: Remove `createSparkles()` call
-- Floating notes: Remove `createFloatingNotes()` call
+**Spin Result:** D + Minor → Practice D minor chord/scale until next spin.
 
 ---
 
-## Browser Support
-
-| Browser | Support |
-|---------|---------|
-| Chrome | ✅ Full |
-| Firefox | ✅ Full |
-| Safari | ✅ Full |
-| Edge | ✅ Full |
-| Mobile Browsers | ✅ Full |
-
-**Note:** Audio requires user interaction first (browser policy). Click Play to enable.
-
----
-
-
----
-
-## Technical Details
-
-- **Pure HTML/CSS/JS** - No frameworks or libraries required
-- **Single file** - Everything contained in one HTML file
-- **CDN dependency** - Google Fonts (Poppins) only
-- **Web Audio API** - For sound generation
-- **SVG** - For wheel segments
-- **CSS Animations** - For all visual effects
-- **Responsive** - Works on all screen sizes
-
----
 
 ## Credits
 
-**Developed for:** Musicians' Den, Ahmedabad  
-**Website:** [musiciansdenindia.com](https://musiciansdenindia.com)  
-**Contact:** +91 84016 40325  
+**Developed for:** Musicians' Den, Ahmedabad
+
+**Developer:** [Anubhav Mohandas](https://github.com/anubhavmohandas1)
+
+**Organization Website:** [musiciansdenindia.com](https://musiciansdenindia.com)
+
+**Contact:** +91 84016 40325
+
 **Email:** musiciansden112@gmail.com
 
 ---
