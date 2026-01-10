@@ -16,6 +16,18 @@
             width: 100%;
             min-height: 100vh;
             overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            background-attachment: fixed;
+        }
+
+        html.light {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 30%, #e0f2f1 60%, #ffffff 100%);
         }
 
         body {
@@ -29,17 +41,21 @@
             padding: 15px 15px 30px;
             position: relative;
             transition: background 0.4s ease, color 0.4s ease;
+            background-attachment: fixed;
+            background-size: cover;
         }
 
         /* Dark Mode (Default) */
         body.dark-mode {
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            background-attachment: fixed;
             color: #fff;
         }
 
         /* Light Mode - Teal/White gradient */
         body.light-mode {
             background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 30%, #e0f2f1 60%, #ffffff 100%);
+            background-attachment: fixed;
             color: #2c3e50;
         }
 
@@ -52,6 +68,7 @@
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
+            background: transparent;
         }
 
         .floating-note {
@@ -863,6 +880,7 @@
             pointer-events: none;
             z-index: 100;
             overflow: hidden;
+            background: transparent;
         }
 
         .confetti {
@@ -870,6 +888,7 @@
             width: 10px;
             height: 10px;
             opacity: 0;
+            will-change: transform, opacity;
         }
 
         .confetti.active { animation: confettiFall 3s ease-out forwards; }
@@ -880,9 +899,10 @@
         }
 
         .sparkle {
-            position: absolute;
+            position: fixed;
             pointer-events: none;
             opacity: 0;
+            z-index: 99;
         }
 
         .sparkle.active { animation: sparkle 0.8s ease-out forwards; }
@@ -1152,6 +1172,7 @@
             isDarkMode = !isDarkMode;
             document.body.classList.toggle('dark-mode', isDarkMode);
             document.body.classList.toggle('light-mode', !isDarkMode);
+            document.documentElement.classList.toggle('light', !isDarkMode);
             themeToggle.textContent = isDarkMode ? '🌙' : '☀️';
         });
 
@@ -1253,17 +1274,20 @@
             for (let i = 0; i < 35; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.top = '-10px';
+                confetti.style.left = (10 + Math.random() * 80) + '%';
+                confetti.style.top = '-20px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
                 confetti.style.width = (4 + Math.random() * 7) + 'px';
                 confetti.style.height = (4 + Math.random() * 7) + 'px';
                 confetti.style.animationDelay = Math.random() * 0.5 + 's';
                 confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+                confetti.style.opacity = '0';
                 confettiContainer.appendChild(confetti);
-                setTimeout(() => confetti.classList.add('active'), 10);
-                setTimeout(() => confetti.remove(), 4000);
+                requestAnimationFrame(() => {
+                    confetti.classList.add('active');
+                });
+                setTimeout(() => confetti.remove(), 4500);
             }
         }
 
@@ -1275,12 +1299,16 @@
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
                 sparkle.innerHTML = '✦';
-                sparkle.style.left = centerX + (Math.random() - 0.5) * 100 + 'px';
-                sparkle.style.top = centerY + (Math.random() - 0.5) * 60 + 'px';
+                const sparkleX = Math.max(20, Math.min(window.innerWidth - 20, centerX + (Math.random() - 0.5) * 100));
+                const sparkleY = Math.max(20, Math.min(window.innerHeight - 20, centerY + (Math.random() - 0.5) * 60));
+                sparkle.style.left = sparkleX + 'px';
+                sparkle.style.top = sparkleY + 'px';
                 sparkle.style.fontSize = (0.7 + Math.random() * 0.8) + 'rem';
                 sparkle.style.color = isDarkMode ? '#d4af37' : '#00897b';
                 document.body.appendChild(sparkle);
-                setTimeout(() => sparkle.classList.add('active'), 10);
+                requestAnimationFrame(() => {
+                    sparkle.classList.add('active');
+                });
                 setTimeout(() => sparkle.remove(), 1000);
             }
         }
